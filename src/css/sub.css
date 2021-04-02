@@ -1,0 +1,17 @@
+.sub {
+  display: flex;
+  /* height: 100vh; */
+  /* text-align: center; */
+}
+
+.sub div:nth-child(1) {
+  flex: 1;
+}
+
+div {
+  flex: 8;
+}
+
+h1 {
+  /* text-align: center; */
+}

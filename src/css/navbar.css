@@ -1,0 +1,32 @@
+.Navbar{
+    display: flex;
+    background: #ccc;
+    justify-content: space-between;
+}
+
+.Navbar h1 .lz-head{
+    margin-left: 35px;
+    color: #f4f4f4;
+    text-decoration: none;
+}
+
+.Navbar ul{
+    margin-right: 15px;
+    align-self: center;
+}
+
+.Navbar ul .nav-link{
+    color: #f4f4f4;
+    display: inline-block;
+    margin-left: 15px;
+    text-decoration: none;
+    padding: 5px;
+}
+
+.Navbar ul .nav-link:hover{
+    background-color: black;
+}
+
+.Navbar ul .active{
+    /* background-color: black; */
+}
