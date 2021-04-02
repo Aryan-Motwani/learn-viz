@@ -1,37 +1,37 @@
 import React, { Component } from "react";
-import main from './Pages';
+import main from "./Pages";
 import { withRouter } from "react-router-dom";
-import Box from './Box';
+import Box from "./Box";
 
 class ListPage extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state = {list : this.getVals()}
+    this.state = { list: this.getVals() };
     this.go = this.go.bind(this);
   }
 
-  go(e){
+  go(e) {
     let path = this.state.list[e];
     if (main[path]) {
       this.props.history.push(`/${path}`);
-    }else{
+    } else {
       this.props.history.push(`/a/${path}`);
     }
   }
 
-  getVals(){
-    if(this.props.match.url === "/") return main["Home"];
+  getVals() {
+    if (this.props.match.url === "/") return main["Home"];
     return main[this.props.match.params.category];
   }
 
-  render(){
+  render() {
     return (
-        <div>
-          <h1>Hello</h1>
-            {this.state.list.map((item,i) => (
-                <Box idx={i} key={i} title={item} handleClick={this.go}/>                
-              ))}
-        </div>
+      <div>
+        <h1>Hellooooooooooo</h1>
+        {this.state.list.map((item, i) => (
+          <Box idx={i} key={i} title={item} handleClick={this.go} />
+        ))}
+      </div>
     );
   }
 }
