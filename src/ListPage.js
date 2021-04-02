@@ -27,7 +27,6 @@ class ListPage extends Component {
   render() {
     return (
       <div>
-        <h1>Hellooooooooooo</h1>
         {this.state.list.map((item, i) => (
           <Box idx={i} key={i} title={item} handleClick={this.go} />
         ))}
