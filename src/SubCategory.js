@@ -9,7 +9,7 @@ import TheoryPage from "./TheoryPage";
 class SubCategory extends Component {
   constructor(props) {
     super(props);
-    this.state = { mode: "Theory" };
+    this.state = { mode: "Visualizer" };
     this.changeMode = this.changeMode.bind(this);
   }
 
@@ -21,7 +21,7 @@ class SubCategory extends Component {
     let title = this.props.match.params.sub_category;
     let { mode } = this.state;
     let sortingComponent;
-    if (mode === "Visualizer" && title === "Bubble Sort") {
+    if (mode === "Visualizer") {
       sortingComponent = <BubbleSort />;
     } else if (mode === "Code" && title === "Bubble Sort") {
       sortingComponent = <BubbleSortCode />;

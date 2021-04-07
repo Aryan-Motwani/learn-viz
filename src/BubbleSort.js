@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import "./css/bar.css";
+import { bubbleSort, insertionSort } from "./genSteps";
 
 class BubbleSort extends Component {
   constructor(props) {
@@ -11,12 +12,12 @@ class BubbleSort extends Component {
       steps: [],
       mode: "key",
       delay: "0.5s",
+      swapped: false,
     };
 
     this.mainDiv = React.createRef();
 
     this.swap = this.swap.bind(this);
-    this.genSteps = this.genSteps.bind(this);
     this.colorChange = this.colorChange.bind(this);
     this.genBars = this.genBars.bind(this);
     this.spaceBar = this.spaceBar.bind(this);
@@ -25,15 +26,23 @@ class BubbleSort extends Component {
 
   componentDidMount() {
     this.genBars();
-    this.genSteps();
+    switch (this.props.location.pathname.split("/")[2]) {
+      case "Bubble Sort":
+        this.setState({ steps: bubbleSort(this.state.nums, this.state.steps) });
+        break;
+      case "Insertion Sort":
+        this.setState({
+          steps: insertionSort(this.state.nums, this.state.steps),
+        });
+        break;
+    }
     document.addEventListener("keydown", this.handleKey);
   }
 
   genNums() {
-    let nums = [77, 47, 34, 27, 50];
+    let nums = [87, 47, 61, 52, 19];
     // let nums = [];
-    // for(let i = 0; i < 5; i++)
-    //     nums.push(Math.floor(Math.random()*100));
+    // for (let i = 0; i < 5; i++) nums.push(Math.floor(Math.random() * 100));
     return nums;
   }
 
@@ -58,7 +67,6 @@ class BubbleSort extends Component {
   }
 
   async stepBack() {
-    console.log("back");
     let { steps, stepNum } = this.state;
     let currentStep = steps[stepNum - 1];
     if (stepNum == 0) {
@@ -70,13 +78,12 @@ class BubbleSort extends Component {
         if (currentStep[j][0] === "c")
           await this.colorChange(currentStep[j][1], currentStep[j][3]);
         else if (currentStep[j][0] === "s")
-          await this.swap(currentStep[j][1], currentStep[j][2]);
+          this.swap(currentStep[j][1], currentStep[j][2]);
       }
     }
     if (currentStep[0] === "c")
       await this.colorChange(currentStep[1], currentStep[3]);
-    else if (currentStep[0] === "s")
-      await this.swap(currentStep[1], currentStep[2]);
+    else if (currentStep[0] === "s") this.swap(currentStep[1], currentStep[2]);
 
     // await this.wait();
     stepNum--;
@@ -92,18 +99,20 @@ class BubbleSort extends Component {
     if (Array.isArray(currentStep[0])) {
       for (let j = 0; j < currentStep.length; j++) {
         if (currentStep[j][0] === "c")
-          await this.colorChange(currentStep[j][1], currentStep[j][2]);
-        else if (currentStep[j][0] === "s")
+          this.colorChange(currentStep[j][1], currentStep[j][2]);
+        else if (currentStep[j][0] === "s") {
           await this.swap(currentStep[j][1], currentStep[j][2]);
+        }
       }
     }
     if (currentStep[0] === "c")
       await this.colorChange(currentStep[1], currentStep[2]);
-    else if (currentStep[0] === "s")
+    else if (currentStep[0] === "s") {
       await this.swap(currentStep[1], currentStep[2]);
+    }
 
     // await this.wait();
-    console.log(steps[stepNum]);
+    // console.log(steps[stepNum]);
     stepNum++;
     this.setState({ stepNum });
   }
@@ -120,89 +129,11 @@ class BubbleSort extends Component {
         blocks[j].style["transition-duration"] = delay;
       }
 
-      await this.stepForward(steps[stepNum]);
+      await this.stepForward();
       stepNum++;
       this.setState({ stepNum });
       await this.wait();
     }
-  }
-
-  async genSteps() {
-    let { nums, steps } = this.state;
-    let noSwaps;
-    let i, j, temp;
-    let colors = ["#cffaff", "#cffaff", "#cffaff", "#cffaff", "#cffaff"];
-
-    for (j = nums.length; j > 0; j--) {
-      noSwaps = true;
-      for (i = 0; i < j - 1; i++) {
-        // await this.colorChange(i,'green');
-        // await this.colorChange(i+1,'green');
-        steps.push(
-          ["c", i, "green", colors[i]],
-          ["c", i + 1, "green", colors[i + 1]]
-        );
-        colors[i] = "green";
-        colors[i + 1] = "green";
-        // console.log([["c",i,"green"],["c",i+1,"green"]]);
-
-        // await this.wait();
-        // console.log(nums[i] , nums[i+1]);
-        if (nums[i] > nums[i + 1]) {
-          // await this.swap(i,i+1);
-          temp = nums[i];
-          nums[i] = nums[i + 1];
-          nums[i + 1] = temp;
-          steps[steps.length] = [];
-          steps[steps.length - 1].push(["s", i, i + 1]);
-          // console.log(["s",i,i+1])
-          noSwaps = false;
-          temp = colors[i];
-          colors[i] = colors[i + 1];
-          colors[i + 1] = temp;
-          // await this.wait();
-        }
-
-        // await this.colorChange(i,'#cffaff');
-        // await this.colorChange(i+1,'#cffaff');
-        if (!noSwaps) {
-          steps.push(["c", i, "#cffaff", colors[i]]);
-          steps.push(["c", i + 1, "#cffaff", colors[i + 1]]);
-          colors[i] = "#cffaff";
-          colors[i + 1] = "#cffaff";
-        } else {
-          steps.push([
-            ["c", i, "#cffaff", colors[i]],
-            ["c", i + 1, "#cffaff", colors[i + 1]],
-          ]);
-          colors[i] = "#cffaff";
-          colors[i + 1] = "#cffaff";
-        }
-        // console.log([["c",i,"#cffaff"],["c",i+1,"#cffaff"]]);
-      }
-      // let colors = Array.from(this.mainDiv.current.children).map(block => {
-      //     return block.style.backgroundColor;
-      // });
-
-      // await this.colorChange(j-1,'orange');
-      steps.push(["c", j - 1, "orange", colors[j - 1]]);
-      colors[j - 1] = "orange";
-      // console.log(["c",j-1,"orange"]);
-
-      // await this.wait();
-
-      if (noSwaps) {
-        for (i = 0; i < j - 1; i++) {
-          // await this.colorChange(i,'orange');
-          steps.push(["c", i, "orange", colors[i]]);
-          colors[i] = "orange";
-          // console.log(["c",j-1,"orange"]);
-        }
-        break;
-      }
-    }
-    this.setState({ steps });
-    console.log(this.state.steps);
   }
 
   swapNodes(i, j) {
@@ -244,8 +175,8 @@ class BubbleSort extends Component {
         this.swapNodes(j, i);
         resolve();
       }, 500);
-      // })
     });
+    // });
   }
 
   colorChange(i, color) {
@@ -254,23 +185,26 @@ class BubbleSort extends Component {
   }
 
   handleKey = (e) => {
-    if (e.keyCode == 39) {
+    if (e.keyCode === 39) {
       this.setState({ mode: "key" });
       this.stepForward();
-    } else if (e.keyCode == 37) {
+    } else if (e.keyCode === 37) {
       this.setState({ mode: "key" });
       this.stepBack();
-    } else if (e.keyCode == 32) {
-      if (this.state.mode == "spacebar") return this.setState({ mode: "key" });
+    } else if (e.keyCode === 32) {
+      if (this.state.mode === "spacebar") return this.setState({ mode: "key" });
       else this.setState({ mode: "spacebar" });
       this.spaceBar();
     }
   };
 
-  boxMove = (e) => {
-    // let textBox = this.mainDiv.current.children[5];
-    // textBox.style.transform = "translate(50px)"
-    this.setState({ delay: "1s" });
+  textBoxes = () => {
+    let currentElement, nextElement, nextWord, currWord;
+    let str = [
+      `We compare ${currentElement} (${currWord} element) & ${nextElement} (${nextWord} element)`,
+      `As ${currentElement} (${currWord} element) is greater than ${nextElement} (${nextWord} element), We swap to move the greater number (${currentElement}) ahead`,
+      `As ${currentElement} (${currWord} element) is smaller than ${nextElement} (${nextWord} element), to keep the greater number (${currentElement}) ahead, we dont swap`,
+    ];
   };
 
   render() {
@@ -292,32 +226,3 @@ class BubbleSort extends Component {
 }
 
 export default withRouter(BubbleSort);
-
-// async bubbleSteps(){
-//     let {nums, steps} = this.state;
-//     let noSwaps;
-//     let i,j;
-//     for(j = nums.length; j > 0; j--){
-//         noSwaps = true;
-//         for(i = 0; i < j-1; i++){
-//             await this.colorChange(i,'green');
-//             await this.colorChange(i+1,'green');
-//             await this.wait();
-//             if (nums[i] > nums[i+1]) {
-//                 await this.swap(i,i+1);
-//                 noSwaps = false;
-//                 await this.wait();
-//             }
-//             await this.colorChange(i,'#cffaff');
-//             await this.colorChange(i+1,'#cffaff');
-//         }
-//         await this.colorChange(j-1,'orange');
-//         await this.wait();
-//         if (noSwaps){
-//             for(i = 0;i < j-1;i++){
-//                 await this.colorChange(i,'orange');
-//             }
-//             break;
-//         }
-//     }
-// }
