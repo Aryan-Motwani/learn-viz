@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import "./css/bar.css";
-import { bubbleSort, insertionSort } from "./genSteps";
+import { bubbleSort, insertionSort, selectionSort } from "./genSteps";
 
-class BubbleSort extends Component {
+class Visualizer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,6 +13,7 @@ class BubbleSort extends Component {
       mode: "key",
       delay: "0.5s",
       swapped: false,
+      numbers: [],
     };
 
     this.mainDiv = React.createRef();
@@ -22,6 +23,9 @@ class BubbleSort extends Component {
     this.genBars = this.genBars.bind(this);
     this.spaceBar = this.spaceBar.bind(this);
     this.stepForward = this.stepForward.bind(this);
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -35,12 +39,17 @@ class BubbleSort extends Component {
           steps: insertionSort(this.state.nums, this.state.steps),
         });
         break;
+      case "Selection Sort":
+        this.setState({
+          steps: selectionSort(this.state.nums, this.state.steps),
+        });
+        break;
     }
     document.addEventListener("keydown", this.handleKey);
   }
 
   genNums() {
-    let nums = [87, 47, 61, 52, 19];
+    let nums = [37, 47, 61, 52, 19];
     // let nums = [];
     // for (let i = 0; i < 5; i++) nums.push(Math.floor(Math.random() * 100));
     return nums;
@@ -54,7 +63,12 @@ class BubbleSort extends Component {
       bars[i].children[0].textContent = nums[i];
       bars[i].style.transform = `translate(${i * 124 + 10}px)`;
       bars[i].style.backgroundColor = "#cffaff";
+      // console.log(this.props.location.pathname.split("/")[2]);
       bars[i].style.height = `${nums[i] * 4}px`;
+      if (this.props.location.pathname.split("/")[2] === "Radix Sort") {
+        bars[i].classList.add("radix");
+        bars[i].style.height = `30px`;
+      }
     }
   }
 
@@ -69,7 +83,7 @@ class BubbleSort extends Component {
   async stepBack() {
     let { steps, stepNum } = this.state;
     let currentStep = steps[stepNum - 1];
-    if (stepNum == 0) {
+    if (stepNum === 0) {
       return;
     }
     if (Array.isArray(currentStep[0])) {
@@ -121,7 +135,7 @@ class BubbleSort extends Component {
     let { steps, stepNum, delay } = this.state;
 
     for (let i = stepNum; i < steps.length; i++) {
-      if (this.state.mode == "key") {
+      if (this.state.mode === "key") {
         break;
       }
       let blocks = this.mainDiv.current.children;
@@ -205,19 +219,52 @@ class BubbleSort extends Component {
       `As ${currentElement} (${currWord} element) is greater than ${nextElement} (${nextWord} element), We swap to move the greater number (${currentElement}) ahead`,
       `As ${currentElement} (${currWord} element) is smaller than ${nextElement} (${nextWord} element), to keep the greater number (${currentElement}) ahead, we dont swap`,
     ];
+    return str;
   };
 
+  handleChange(evt) {
+    evt.preventDefault();
+    this.setState({
+      [evt.target.name]: evt.target.value,
+    });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    let { nums, numbers } = this.state;
+    nums = numbers.split(",");
+    nums.map((i) => +i);
+    // this.setState({ nums });
+    // this.genBars();
+    console.log(nums);
+  }
+
   render() {
-    let { nums } = this.state;
+    let { nums, numbers } = this.state;
+    console.log(numbers);
     return (
       <div className="bar-main">
+        {/* <button style={{ transform: "translate(80px)" }}>Random</button>
+        <button style={{ transform: "translate(150px)" }}>Nearly Sorted</button>
+        <button style={{ transform: "translate(250px)" }}>Sorted</button>
+        <form onSubmit={this.handleSubmit}>
+          <input
+            type="text"
+            name="numbers"
+            value={this.state.numbers}
+            onChange={this.handleChange}
+          />
+          <button style={{ transform: "translate(150px)" }}>go</button>
+        </form>
+        <button style={{ transform: "translate(380px)" }}>{"<<"}</button>
+        <button style={{ transform: "translate(420px)" }}>{"<>"}</button>
+        <button style={{ transform: "translate(460px)" }}>{">>"}</button> */}
         <div className="main-div" ref={this.mainDiv}>
           {nums.map((i, j) => (
             <div key={j}>
               <label></label>
             </div>
           ))}
-          <span className="tbox">This is a text box</span>
         </div>
         <button onClick={this.boxMove}>Move Box</button>
       </div>
@@ -225,4 +272,4 @@ class BubbleSort extends Component {
   }
 }
 
-export default withRouter(BubbleSort);
+export default withRouter(Visualizer);

@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { withRouter } from "react-router";
 import SideBar from "./SideBar";
 import "./css/sub.css";
-import BubbleSort from "./BubbleSort";
-import BubbleSortCode from "./BubbleSortCode";
+import Visualizer from "./Visualizer";
+import Code from "./Code";
 import TheoryPage from "./TheoryPage";
 
 class SubCategory extends Component {
@@ -22,10 +22,10 @@ class SubCategory extends Component {
     let { mode } = this.state;
     let sortingComponent;
     if (mode === "Visualizer") {
-      sortingComponent = <BubbleSort />;
-    } else if (mode === "Code" && title === "Bubble Sort") {
-      sortingComponent = <BubbleSortCode />;
-    } else if (mode === "Theory" && title === "Bubble Sort") {
+      sortingComponent = <Visualizer />;
+    } else if (mode === "Code") {
+      sortingComponent = <Code title={title} />;
+    } else if (mode === "Theory") {
       sortingComponent = <TheoryPage />;
     }
     return (
