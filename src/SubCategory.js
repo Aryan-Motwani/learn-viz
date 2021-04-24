@@ -5,6 +5,7 @@ import "./css/sub.css";
 import Visualizer from "./Visualizer";
 import Code from "./Code";
 import TheoryPage from "./TheoryPage";
+import BST from "./BST";
 
 class SubCategory extends Component {
   constructor(props) {
@@ -22,7 +23,11 @@ class SubCategory extends Component {
     let { mode } = this.state;
     let sortingComponent;
     if (mode === "Visualizer") {
-      sortingComponent = <Visualizer />;
+      if (title === "Trees") {
+        sortingComponent = <BST />;
+      } else {
+        sortingComponent = <Visualizer />;
+      }
     } else if (mode === "Code") {
       sortingComponent = <Code title={title} />;
     } else if (mode === "Theory") {
@@ -32,9 +37,7 @@ class SubCategory extends Component {
       <div className="sub">
         <SideBar mode={mode} handleClick={this.changeMode} />
         <div>
-          <h1>
-            {title}({mode})
-          </h1>
+          <h1>{/* {title}({mode}) */}</h1>
           {sortingComponent}
         </div>
       </div>

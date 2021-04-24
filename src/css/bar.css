@@ -1,10 +1,17 @@
+.main-div {
+  /* display: flex; */
+  text-align: center;
+  /* align-items: center; */
+  align-content: center;
+}
+
 .Bar {
   height: 300px;
   width: 100px;
   background-color: #cffaff;
   position: absolute;
-  bottom: 0;
-  margin-bottom: 50px;
+  bottom: 270px;
+  /* margin-bottom: 50px; */
   transition-property: all;
   /* transition-duration: 0.5s; */
   transition-delay: 0;
@@ -12,11 +19,12 @@
 
 .radix {
   height: 30px;
-  width: 50px;
+  width: 35px;
   padding-top: 10px;
-  padding-left: 35px;
+  /* padding-left: 35px; */
   top: 0;
   margin-top: 180px;
+  display: flex;
 }
 
 .bar-main {
@@ -36,6 +44,20 @@ button:nth-child(2) {
 .tbox {
   position: absolute;
   border: red solid 0.5px;
-  /* background: #000; */
+  background: #f2f2f2;
+  /* color: "peach"; */
   padding: 2px;
+}
+
+.bucket {
+  color: red;
+  width: 35px;
+  border-top: solid black 0.5px;
+  position: absolute;
+  padding: 0 10px;
+  text-align: center;
+}
+
+label {
+  padding-bottom: 10px;
 }
