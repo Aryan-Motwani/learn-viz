@@ -40,7 +40,6 @@ class Visualizer extends Component {
 
   componentDidMount() {
     this.genBars();
-    // this.genBucks();
     switch (this.props.location.pathname.split("/")[2]) {
       case "Bubble Sort":
         let i = bubbleSort(this.state.nums, this.state.steps);
@@ -60,13 +59,15 @@ class Visualizer extends Component {
         });
         break;
       case "Quick Sort":
-        // quickSort(this.state.nums, this.state.steps);
-        this.quick(this.state.nums, this.state.steps);
+        this.setState({
+          steps: this.quickk(this.state.nums, this.state.steps),
+        });
         break;
       case "Merge Sort":
         this.mergeSort(this.state.nums, this.state.steps);
         break;
       case "Radix Sort":
+        this.genBucks();
         this.setState({
           steps: this.radixSort(this.state.nums, this.state.steps),
         });
@@ -114,9 +115,8 @@ class Visualizer extends Component {
   genBucks = () => {
     let bucks = this.buckets.current.children;
     for (let i = 0; i < bucks.length; i++) {
-      bucks[i].style.transform = `translate(${250 + i * 64}px,250px)`;
+      bucks[i].style.transform = `translate(${250 + i * 64}px,320px)`;
     }
-    console.log();
   };
 
   move = async (i, j) => {
@@ -133,25 +133,15 @@ class Visualizer extends Component {
   };
 
   correctSwap = (start, end) => {
-    // console.log("++++++++++++++");
     let { nums } = this.state;
     end++;
-    // nums = newNums.concat(nums.slice(newNums.length, nums.length));
     let bars = this.mainDiv.current.children;
-    // console.log(nums.slice(start, end));
-
-    // console.log(ary);
     for (let j = start; j < end; j++) {
       let ary = Array.from(bars).map((i) => {
         return +i.children[0].textContent;
       });
       this.swapNodes(ary.indexOf(nums[j]), j);
     }
-    // let ary = Array.from(bars).map((i) => {
-    //   return +i.children[0].textContent;
-    // });
-    // console.log(ary);
-    // console.log("++++++++++++++");
   };
 
   mergeSort = async (nums, steps) => {
@@ -250,7 +240,6 @@ class Visualizer extends Component {
   };
 
   quick = async (nums, steps) => {
-    // let numsDup = nums.map((nums) => nums);
     let colors = ["#cffaff", "#cffaff", "#cffaff", "#cffaff", "#cffaff"];
 
     let pivot = async (nums, start = 0, end = nums.length - 1) => {
@@ -278,7 +267,6 @@ class Visualizer extends Component {
       colors = Array.from(this.mainDiv.current.children).map(
         (i) => i.style.backgroundColor
       );
-      console.log(colors);
       for (let i = start; i < end + 1; i++)
         if (colors[i] !== "orange") {
           this.colorChange(i, "#cffaff");
@@ -286,11 +274,8 @@ class Visualizer extends Component {
       colors = Array.from(this.mainDiv.current.children).map(
         (i) => i.style.backgroundColor
       );
-      console.log(colors);
-      console.log("--------");
 
       this.colorChange(swapIdx, "orange");
-      console.log(nums);
       return swapIdx;
     };
 
@@ -314,6 +299,100 @@ class Visualizer extends Component {
       return nums;
     };
     quicks(nums);
+  };
+
+  quickk = (nums, steps) => {
+    let swap = (arr, idx1, idx2) => {
+      [arr[idx1], arr[idx2]] = [arr[idx2], arr[idx1]];
+    };
+    let colors = ["#cffaff", "#cffaff", "#cffaff", "#cffaff", "#cffaff"];
+
+    let pivot = (nums, start = 0, end = nums.length - 1) => {
+      let pivot = nums[start];
+      let swapIdx = start;
+      // this.colorChange(start, "orange");
+      steps.push(["c", start, "orange"]);
+      colors[start] = "orange";
+      // await this.wait();
+      for (let i = start + 1; i <= end; i++) {
+        steps.push(["c", i, "red"]);
+        colors[i] = "red";
+        // this.colorChange(i, "red");
+        // await this.wait();
+
+        if (pivot > nums[i]) {
+          swapIdx++;
+          steps.push(["s", i, swapIdx]);
+          swap(nums, i, swapIdx);
+
+          // this.swap(i, swapIdx);
+          // await this.wait();
+          // this.colorChange(swapIdx, "green");
+
+          // console.log(`${pivot} > ${nums[i]}`);
+          // console.log("turning green : " + nums[i]);
+
+          steps.push(["c", swapIdx, "green"]);
+          colors[swapIdx] = "green";
+        } else {
+          // this.colorChange(i, "purple");
+          steps.push(["c", i, "purple"]);
+          colors[i] = "purple";
+        }
+      }
+
+      // await this.wait();
+      // this.swap(start, swapIdx);
+      steps.push(["s", start, swapIdx]);
+      swap(nums, start, swapIdx);
+
+      // await this.wait();
+
+      // colors = Array.from(this.mainDiv.current.children).map(
+      //   (i) => i.style.backgroundColor
+      // );
+
+      for (let i = start; i < end + 1; i++)
+        if (colors[i] !== "orange") {
+          // this.colorChange(i, "#cffaff");
+          steps.push(["c", i, "#cffaff"]);
+          colors[i] = "#cffaff";
+        }
+      // colors = Array.from(this.mainDiv.current.children).map(
+      //   (i) => i.style.backgroundColor
+      // );
+
+      // this.colorChange(swapIdx, "orange");
+      steps.push(["c", swapIdx, "orange"]);
+      colors[swapIdx] = "orange";
+
+      console.log(nums + "\n-------------");
+      return swapIdx;
+    };
+
+    let quicks = (nums, left = 0, right = nums.length - 1) => {
+      let temp = nums.slice(left, right + 1);
+      if (temp.length === 1) {
+        nums.forEach((i, j) => {
+          if (i === temp[0]) {
+            // colors[j] = "orange";
+            // this.colorChange(j, "orange");
+            steps.push(["c", j, "orange"]);
+            colors[j] = "orange";
+          }
+        });
+      }
+      // await this.wait();
+      if (left < right) {
+        let pivotIndex = pivot(nums, left, right); //3
+        quicks(nums, left, pivotIndex - 1);
+        quicks(nums, pivotIndex + 1, right);
+      }
+      return nums;
+    };
+    quicks(nums);
+    console.log(steps);
+    return steps;
   };
 
   async stepBack() {
@@ -347,6 +426,7 @@ class Visualizer extends Component {
     if (stepNum >= steps.length) {
       return;
     }
+    console.log(currentStep);
     if (Array.isArray(currentStep[0])) {
       for (let j = 0; j < currentStep.length; j++) {
         if (currentStep[j][0] === "c")
@@ -360,9 +440,13 @@ class Visualizer extends Component {
         } else if (currentStep[j][0] === "k") {
           await this.correctSwap(currentStep[j][1], currentStep[j][2]);
         } else if (currentStep[j][0] === "r") {
-          await this.radixMove(currentStep[j][1], currentStep[j][2]);
+          await this.radixMove(
+            currentStep[j][1],
+            currentStep[j][2],
+            currentStep[j][3]
+          );
         } else if (currentStep[j][0] === "p") {
-          await this.pickup(currentStep[j][1]);
+          await this.pickup(currentStep[j][1], currentStep[j][2]);
         }
       }
     }
@@ -377,9 +461,9 @@ class Visualizer extends Component {
     else if (currentStep[0] === "k")
       await this.correctSwap(currentStep[1], currentStep[2]);
     else if (currentStep[0] === "r") {
-      await this.radixMove(currentStep[1], currentStep[2]);
+      await this.radixMove(currentStep[1], currentStep[2], currentStep[3]);
     } else if (currentStep[0] === "p") {
-      await this.pickup(currentStep[1]);
+      await this.pickup(currentStep[1], currentStep[2]);
     }
 
     // await this.wait();
@@ -436,9 +520,9 @@ class Visualizer extends Component {
       let bars = mainDiv.children;
       let { nums } = this.state;
 
-      temp = nums[i];
-      nums[i] = nums[j];
-      nums[j] = temp;
+      // temp = nums[i];
+      // nums[i] = nums[j];
+      // nums[j] = temp;
 
       temp = bars[i].style.transform;
       bars[i].style.transform = bars[j].style.transform;
@@ -510,38 +594,23 @@ class Visualizer extends Component {
     // console.log(nums);
   }
 
-  radixMove = (val, digit, k = 0) => {
-    let { buckets } = this.state;
+  radixMove = (val, digit, bucketLength) => {
     let bars = this.mainDiv.current.children;
     let idx;
-    digit = this.getDigit(val, digit);
-    k = buckets[digit].length;
     Array.from(bars).forEach((i, j) => {
       if (+i.textContent === val) idx = j;
     });
     bars[idx].style.transform = `translate( ${252 + 64 * digit}px,${
-      205 - k * 35
+      205 - bucketLength * 35
     }px)`;
-    buckets[digit].push(val);
-    this.setState({ buckets });
   };
 
-  pickup = async (arr) => {
-    console.log(arr);
+  pickup = (val, i) => {
     let bars = this.mainDiv.current.children;
     let barArray = Array.from(bars).map((i) => +i.textContent);
-    for (let i = 0; i < arr.length; i++) {
-      bars[barArray.indexOf(arr[i])].style.transform = `translate(${
-        250 + (i * 64 + 10)
-      }px)`;
-      await this.wait();
-    }
-    arr.forEach((i, j) => {
-      barArray = Array.from(bars).map((i) => +i.textContent);
-      let k = barArray.indexOf(i);
-      this.swapNodes(j, k);
-    });
-    barArray = Array.from(bars).map((i) => +i.textContent);
+    let idx = barArray.indexOf(val);
+    bars[idx].style.transform = `translate(${250 + (i * 64 + 10)}px)`;
+    this.swapNodes(i, idx);
   };
 
   getDigit(num, digit) {
@@ -551,14 +620,16 @@ class Visualizer extends Component {
   }
 
   radixSort = (nums, steps) => {
-    for (let k = 0; k < 2; k++) {
-      // await this.wait();
+    const buckets = [[], [], [], [], [], [], [], [], [], []];
+    let digit;
+    let digitPlace = 0;
+    for (let digitPlace = 0; digitPlace < 2; digitPlace++) {
       for (let i = 0; i < nums.length; i++) {
-        // await this.radixMove(nums[i], k);
-        steps.push(["r", nums[i], k]);
-        // await this.wait();
+        digit = this.getDigit(nums[i], digitPlace);
+        steps.push(["r", nums[i], digit, buckets[digit].length]);
+        buckets[digit].push(nums[i]);
       }
-      let { buckets } = this.state;
+
       let numbs = [];
       for (let i = 0; i < 10; i++) {
         let l = buckets[i].length;
@@ -567,13 +638,44 @@ class Visualizer extends Component {
         }
       }
 
-      // await this.pickup(numbs);
-      console.log("hell", numbs);
-      steps.push(["p", numbs]);
-      nums = numbs;
+      for (let i = 0; i < numbs.length; i++) {
+        steps.push(["p", numbs[i], i]);
+      }
     }
-    // console.log(steps);
     return steps;
+
+    // for (let i = 0; i < nums.length; i++) {
+    //   steps.push(["r", nums[i], 0]);
+    // }
+
+    // let { buckets } = this.state;
+    // let numbs = [];
+    // for (let i = 0; i < 10; i++) {
+    //   let l = buckets[i].length;
+    //   for (let j = 0; j < l; j++) {
+    //     numbs.push(buckets[i].shift());
+    //   }
+    // }
+
+    // steps.push(["p", numbs]);
+
+    // for (let k = 0; k < 2; k++) {
+    //   for (let i = 0; i < nums.length; i++) {
+    //     steps.push(["r", nums[i], k]);
+    //   }
+    //   let { buckets } = this.state;
+    //   let numbs = [];
+    //   for (let i = 0; i < 10; i++) {
+    //     let l = buckets[i].length;
+    //     for (let j = 0; j < l; j++) {
+    //       numbs.push(buckets[i].shift());
+    //     }
+    //   }
+
+    //   steps.push(["p", numbs]);
+    //   nums = numbs;
+    // }
+    // return steps;
 
     // for (let k = 0; k < 2; k++) {
     //   await this.wait();

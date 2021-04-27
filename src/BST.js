@@ -8,6 +8,7 @@ export default class BST extends Component {
     this.blockClone = React.createRef();
     this.state = {
       inputVal: "",
+      deleteVal: "",
       mytree: [null, null, null],
     };
     this.handleChange = this.handleChange.bind(this);
@@ -15,14 +16,13 @@ export default class BST extends Component {
   }
 
   genTreee = (i, j, v) => {
-    console.log("hello");
     const starts = [500, 300, 200, 150];
     const gaps = [0, 400, 200, 100];
 
-    let blocks = this.blocksdemo.current.children;
+    let blocks = this.blocksdemo.current;
 
     let newNode = this.blockClone.current.children[0].cloneNode(true);
-    blocks[0].parentNode.append(newNode);
+    blocks.append(newNode);
 
     newNode.children[0].textContent = v;
     newNode.style.opacity = 1;
@@ -68,13 +68,20 @@ export default class BST extends Component {
     });
   }
 
-  handleSubmit(evt) {
+  async handleSubmit(evt) {
     evt.preventDefault();
     let { inputVal } = this.state;
-    this.insert(+inputVal);
+    let values = inputVal.split(",");
+    console.log({ values });
+    for (let i = 0; i < values.length; i++) {
+      await this.insert(+values[i]);
+      console.log(+values[i]);
+    }
+    // this.insert(+inputVal);
   }
 
   insert = (value) => {
+    console.log({ value });
     let { mytree } = this.state;
     let newNode = [value, null, null];
     let j = 0;
@@ -86,6 +93,7 @@ export default class BST extends Component {
       this.setState({ mytree });
       return;
     }
+
     j++;
     let current = mytree;
     while (true) {
@@ -95,7 +103,6 @@ export default class BST extends Component {
         if (current[1] === null) {
           current[1] = newNode;
           this.setState({ mytree });
-          console.log(parseInt(+start, 2), j, value);
 
           this.genTreee(parseInt(+start, 2), j, value);
           this.genLines(parseInt(+start, 2), j - 1, value);
@@ -107,7 +114,6 @@ export default class BST extends Component {
         start += "1";
         if (current[2] === null) {
           current[2] = newNode;
-          console.log(parseInt(+start, 2), j, value);
           this.genTreee(parseInt(+start, 2), j, value);
           this.genLines(parseInt(+start, 2), j - 1, value);
 
@@ -122,16 +128,83 @@ export default class BST extends Component {
     }
   };
 
+  async wait() {
+    await new Promise((resolve) =>
+      setTimeout(() => {
+        resolve();
+      }, 500)
+    );
+  }
+
+  remove = (value) => {
+    let { mytree } = this.state;
+
+    const removeNode = (node, value) => {
+      if (!node[0]) {
+        return null;
+      }
+
+      if (value == node[0]) {
+        if (!node[1] && !node[2]) {
+          return null;
+        }
+
+        if (!node[1]) {
+          return node[2];
+        }
+
+        if (!node[2]) {
+          return node[1];
+        }
+
+        let temp = node[2];
+
+        while (!temp[1]) {
+          temp = temp[1];
+        }
+
+        node[0] = temp[0];
+
+        node[2] = removeNode(node[2], temp[0]);
+      } else if (value < node[0]) {
+        node[1] = removeNode(node[1], value);
+        return node;
+      } else {
+        node[2] = removeNode(node[2], value);
+        return node;
+      }
+    };
+
+    // console.log(blocks.children[0]);
+    mytree = removeNode(mytree, value);
+  };
+
+  BFS() {
+    let { mytree } = this.state;
+    let node = mytree,
+      data = [],
+      queue = [];
+    queue.push(node);
+
+    while (queue.length) {
+      node = queue.shift();
+      data.push(node[0]);
+      if (node[1]) queue.push(node[1]);
+      if (node[2]) queue.push(node[2]);
+    }
+    return data;
+  }
+
+  handleDelete = async (evt) => {
+    evt.preventDefault();
+  };
+
   render() {
     return (
       <div>
         <h1>Binary Search Tree</h1>
 
-        <div ref={this.blocksdemo} className="blocks">
-          <div style={{ opacity: "0" }} className="block">
-            <label>0</label>
-          </div>
-        </div>
+        <div ref={this.blocksdemo} className="blocks"></div>
 
         <div style={{ opacity: "0" }} ref={this.blockClone}>
           <div className="block">
@@ -147,7 +220,20 @@ export default class BST extends Component {
             onChange={this.handleChange}
             value={this.inputVal}
           ></input>
-          <button style={{ transform: "translate(10px,-467.5px)" }}>Add</button>
+          <button style={{ transform: "translate(10px, -411.5px)" }}>
+            Add
+          </button>
+        </form>
+        <form onSubmit={this.handleDelete}>
+          <input
+            type="text"
+            name="deleteVal"
+            onChange={this.handleChange}
+            value={this.deleteVal}
+          ></input>
+          <button style={{ transform: "translate(40px, -411.5px)" }}>
+            Remove
+          </button>
         </form>
       </div>
     );
