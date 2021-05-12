@@ -6,6 +6,7 @@ import Visualizer from "./Visualizer";
 import Code from "./Code";
 import TheoryPage from "./TheoryPage";
 import BST from "./BST";
+import LinkedList from "./LinkedList";
 
 class SubCategory extends Component {
   constructor(props) {
@@ -25,6 +26,8 @@ class SubCategory extends Component {
     if (mode === "Visualizer") {
       if (title === "Trees") {
         sortingComponent = <BST />;
+      } else if (title === "Linked List") {
+        sortingComponent = <LinkedList />;
       } else {
         sortingComponent = <Visualizer />;
       }

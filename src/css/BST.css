@@ -31,4 +31,24 @@ label {
   height: 5px;
   width: 30px;
   background-color: black;
+  transition: all;
+  transition-duration: 2s;
+}
+
+.arrowhead {
+  width: 0;
+  height: 0;
+  position: absolute;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+
+  border-left: 8px solid black;
+
+  transition: all;
+  transition-duration: 2s;
+}
+
+.arrow {
+  transition: all;
+  transition-duration: 2s;
 }

@@ -5,7 +5,8 @@ import {
   bubbleSort,
   insertionSort,
   selectionSort,
-  // quickSort,
+  radixSort,
+  quickSort,
   // mergeSort,
 } from "./genSteps";
 
@@ -60,11 +61,13 @@ class Visualizer extends Component {
         break;
       case "Quick Sort":
         this.setState({
-          steps: this.quickk(this.state.nums, this.state.steps),
+          steps: quickSort(this.state.nums, this.state.steps),
         });
         break;
       case "Merge Sort":
-        this.mergeSort(this.state.nums, this.state.steps);
+        this.setState({
+          steps: this.mergeSortt(this.state.nums, this.state.steps),
+        });
         break;
       case "Radix Sort":
         this.genBucks();
@@ -76,12 +79,12 @@ class Visualizer extends Component {
       default:
         break;
     }
-    // console.log("state", this.state.steps);
     document.addEventListener("keydown", this.handleKey);
+    document.addEventListener("mousedown", this.handleClick);
   }
 
   genNums() {
-    let nums = [21, 99, 44, 1, 37, 98, 35, 26];
+    let nums = [99, 21, 44, 1, 37, 98, 35, 26];
     // let nums = [];
     // for (let i = 0; i < 8; i++) nums.push(Math.floor(Math.random() * 100));
     return nums;
@@ -120,11 +123,11 @@ class Visualizer extends Component {
   };
 
   move = async (i, j) => {
-    let { newNums } = this.state;
+    // let { newNums } = this.state;
     let bars = this.mainDiv.current.children;
     bars[i].style.transform = `translate(${250 + 64 * j}px,170px)`;
     // newNums[j] = +bars[i].children[0].textContent;
-    this.setState({ newNums });
+    // this.setState({ newNums });
   };
 
   moveBack = async (i, j = 0) => {
@@ -132,8 +135,8 @@ class Visualizer extends Component {
     bars[i].style.transform = `translate(${250 + 64 * i}px,0px)`;
   };
 
-  correctSwap = (start, end) => {
-    let { nums } = this.state;
+  correctSwap = (arr, start, end) => {
+    let nums = arr;
     end++;
     let bars = this.mainDiv.current.children;
     for (let j = start; j < end; j++) {
@@ -147,23 +150,27 @@ class Visualizer extends Component {
   mergeSort = async (nums, steps) => {
     // this.setState({ nums: [] });
     let colors = ["#cffaff", "#cffaff", "#cffaff", "#cffaff", "#cffaff"];
-    // const mixColors = [
-    //   "purple",
-    //   "green",
-    //   "orange",
-    //   "red",
-    //   "yellow",
-    //   "violet",
-    //   "cyan",
-    //   "magenta",
-    // ];
+
+    const mixColors = [
+      "purple",
+      "green",
+      "orange",
+      "red",
+      "yellow",
+      "violet",
+      "cyan",
+      "magenta",
+    ];
+
     await this.wait();
+
     steps.push([]);
+
     nums.forEach((block, i) => {
-      // this.colorChange(i, mixColors[i]);
+      this.colorChange(i, mixColors[i]);
       // steps[steps.length - 1].push(["c", i, mixColors, colors[i]]);
     });
-    // await this.wait();
+    await this.wait();
 
     let merge = async (arr1, arr2) => {
       await this.wait();
@@ -235,162 +242,130 @@ class Visualizer extends Component {
       let right = myMerge(arr.slice(mid));
       return merge(left, right);
     };
-    // console.log(nums);
     myMerge(nums);
   };
 
-  quick = async (nums, steps) => {
-    let colors = ["#cffaff", "#cffaff", "#cffaff", "#cffaff", "#cffaff"];
+  mergeSortt = (nums, steps) => {
+    const colors = ["#cffaff", "#cffaff", "#cffaff", "#cffaff", "#cffaff"];
+    const mixColors = [
+      "purple",
+      "green",
+      "orange",
+      "red",
+      "yellow",
+      "violet",
+      "cyan",
+      "magenta",
+    ];
+    // await this.wait();
+    nums.forEach((block, i) => {
+      // this.colorChange(i, mixColors[i]);
+      steps.push(["c", i, mixColors[i]]);
+      colors[i] = mixColors[i];
+    });
+    // await this.wait();
 
-    let pivot = async (nums, start = 0, end = nums.length - 1) => {
-      let pivot = nums[start];
-      let swapIdx = start;
-      this.colorChange(start, "orange");
-      await this.wait();
-      for (let i = start + 1; i <= end; i++) {
-        this.colorChange(i, "red");
-        await this.wait();
+    let merge = async (arr1, arr2) => {
+      let newNums = [];
+      let count = nums.indexOf(arr1[0]);
+      let results = [];
+      // let bars = this.mainDiv.current.children;
+      // let primary = bars[nums.indexOf(arr1[0])].style.backgroundColor;
+      let primary = colors[nums.indexOf(arr1[0])];
+      let i = 0;
+      let j = 0;
 
-        if (pivot > nums[i]) {
-          swapIdx++;
-          this.swap(i, swapIdx);
-          await this.wait();
-          this.colorChange(swapIdx, "green");
+      while (i < arr1.length && j < arr2.length) {
+        if (arr2[j] > arr1[i]) {
+          results.push(arr1[i]);
+          // this.move(nums.indexOf(arr1[i]), count);
+          // bars[nums.indexOf(arr1[i])].style.backgroundColor = primary;
+          steps.push(["m", nums.indexOf(arr1[i]), count]);
+          steps.push(["c", nums.indexOf(arr1[i]), primary]);
+          colors[nums.indexOf(arr1[i])] = primary;
+          newNums[count] = arr1[i];
+          i++;
         } else {
-          this.colorChange(i, "purple");
+          results.push(arr2[j]);
+          // this.move(nums.indexOf(arr2[j]), count);
+          // bars[nums.indexOf(arr2[j])].style.backgroundColor = primary;
+          steps.push(["m", nums.indexOf(arr2[j]), count]);
+          steps.push(["c", nums.indexOf(arr2[j]), primary]);
+          colors[nums.indexOf(arr2[j])] = primary;
+          newNums[count] = arr2[j];
+          j++;
         }
-      }
-
-      await this.wait();
-      this.swap(start, swapIdx);
-      await this.wait();
-      colors = Array.from(this.mainDiv.current.children).map(
-        (i) => i.style.backgroundColor
-      );
-      for (let i = start; i < end + 1; i++)
-        if (colors[i] !== "orange") {
-          this.colorChange(i, "#cffaff");
-        }
-      colors = Array.from(this.mainDiv.current.children).map(
-        (i) => i.style.backgroundColor
-      );
-
-      this.colorChange(swapIdx, "orange");
-      return swapIdx;
-    };
-
-    let quicks = async (nums, left = 0, right = nums.length - 1) => {
-      let temp = nums.slice(left, right + 1);
-      if (temp.length === 1) {
-        nums.forEach((i, j) => {
-          if (i === temp[0]) {
-            // steps.push(["c", j, "orange", colors[j]]);
-            // colors[j] = "orange";
-            this.colorChange(j, "orange");
-          }
-        });
-      }
-      await this.wait();
-      if (left < right) {
-        let pivotIndex = await pivot(nums, left, right); //3
-        await quicks(nums, left, pivotIndex - 1);
-        await quicks(nums, pivotIndex + 1, right);
-      }
-      return nums;
-    };
-    quicks(nums);
-  };
-
-  quickk = (nums, steps) => {
-    let swap = (arr, idx1, idx2) => {
-      [arr[idx1], arr[idx2]] = [arr[idx2], arr[idx1]];
-    };
-    let colors = ["#cffaff", "#cffaff", "#cffaff", "#cffaff", "#cffaff"];
-
-    let pivot = (nums, start = 0, end = nums.length - 1) => {
-      let pivot = nums[start];
-      let swapIdx = start;
-      // this.colorChange(start, "orange");
-      steps.push(["c", start, "orange"]);
-      colors[start] = "orange";
-      // await this.wait();
-      for (let i = start + 1; i <= end; i++) {
-        steps.push(["c", i, "red"]);
-        colors[i] = "red";
-        // this.colorChange(i, "red");
+        count++;
         // await this.wait();
-
-        if (pivot > nums[i]) {
-          swapIdx++;
-          steps.push(["s", i, swapIdx]);
-          swap(nums, i, swapIdx);
-
-          // this.swap(i, swapIdx);
-          // await this.wait();
-          // this.colorChange(swapIdx, "green");
-
-          // console.log(`${pivot} > ${nums[i]}`);
-          // console.log("turning green : " + nums[i]);
-
-          steps.push(["c", swapIdx, "green"]);
-          colors[swapIdx] = "green";
-        } else {
-          // this.colorChange(i, "purple");
-          steps.push(["c", i, "purple"]);
-          colors[i] = "purple";
-        }
+      }
+      while (i < arr1.length) {
+        results.push(arr1[i]);
+        // this.move(nums.indexOf(arr1[i]), count);
+        // bars[nums.indexOf(arr1[i])].style.backgroundColor = primary;
+        steps.push(["m", nums.indexOf(arr1[i]), count]);
+        steps.push(["c", nums.indexOf(arr1[i]), primary]);
+        colors[nums.indexOf(arr1[i])] = primary;
+        newNums[count] = arr1[i];
+        i++;
+        count++;
+        // await this.wait();
+      }
+      while (j < arr2.length) {
+        results.push(arr2[j]);
+        // this.move(nums.indexOf(arr2[j]), count);
+        // bars[nums.indexOf(arr2[j])].style.backgroundColor = primary;
+        steps.push(["m", nums.indexOf(arr2[j]), count]);
+        steps.push(["c", nums.indexOf(arr2[j]), primary]);
+        colors[nums.indexOf(arr2[j])] = primary;
+        newNums[count] = arr2[j];
+        j++;
+        count++;
+        // await this.wait();
       }
 
+      let start = nums.indexOf(arr1[0]);
+      let end = nums.indexOf(arr2[arr2.length - 1]);
+
+      for (let o = 0; o < newNums.length; o++)
+        if (newNums[o]) nums[o] = newNums[o];
+
+      // for (let n = 0; n < newNums.length; n++) if (newNums[n]) this.moveBack(n);
+      for (let n = 0; n < newNums.length; n++)
+        if (newNums[n]) steps.push(["b", n]);
+
+      // this.correctSwap(start, end);
+      steps.push(["k", nums, start, end]);
       // await this.wait();
-      // this.swap(start, swapIdx);
-      steps.push(["s", start, swapIdx]);
-      swap(nums, start, swapIdx);
 
-      // await this.wait();
-
-      // colors = Array.from(this.mainDiv.current.children).map(
-      //   (i) => i.style.backgroundColor
-      // );
-
-      for (let i = start; i < end + 1; i++)
-        if (colors[i] !== "orange") {
-          // this.colorChange(i, "#cffaff");
-          steps.push(["c", i, "#cffaff"]);
-          colors[i] = "#cffaff";
-        }
-      // colors = Array.from(this.mainDiv.current.children).map(
-      //   (i) => i.style.backgroundColor
-      // );
-
-      // this.colorChange(swapIdx, "orange");
-      steps.push(["c", swapIdx, "orange"]);
-      colors[swapIdx] = "orange";
-
-      console.log(nums + "\n-------------");
-      return swapIdx;
+      return results;
     };
 
-    let quicks = (nums, left = 0, right = nums.length - 1) => {
-      let temp = nums.slice(left, right + 1);
-      if (temp.length === 1) {
-        nums.forEach((i, j) => {
-          if (i === temp[0]) {
-            // colors[j] = "orange";
-            // this.colorChange(j, "orange");
-            steps.push(["c", j, "orange"]);
-            colors[j] = "orange";
+    let myMerge = async (nums) => {
+      let merged = nums.map((num) => [num]);
+      let i = 0;
+      let j = 0;
+      ////// let k = j + 1;
+      let temp;
+      while (merged.length !== 1) {
+        if (i < merged.length - 1) {
+          if (merged[i].length === merged[i + 1].length) {
+            temp = await merge(merged[i], merged[i + 1]);
+            merged[i] = temp;
+            merged.splice(i + 1, 1);
+            i = 0;
+          } else {
+            i++;
           }
-        });
+        } else {
+          temp = await merge(merged[i - 1], merged[i]);
+          merged[i - 1] = temp;
+          merged.splice(i, 1);
+          i = 0;
+        }
+        j++;
       }
-      // await this.wait();
-      if (left < right) {
-        let pivotIndex = pivot(nums, left, right); //3
-        quicks(nums, left, pivotIndex - 1);
-        quicks(nums, pivotIndex + 1, right);
-      }
-      return nums;
     };
-    quicks(nums);
+    myMerge(nums);
     console.log(steps);
     return steps;
   };
@@ -459,7 +434,7 @@ class Visualizer extends Component {
     else if (currentStep[0] === "b")
       await this.moveBack(currentStep[1], currentStep[2]);
     else if (currentStep[0] === "k")
-      await this.correctSwap(currentStep[1], currentStep[2]);
+      await this.correctSwap(currentStep[1], currentStep[2], currentStep[3]);
     else if (currentStep[0] === "r") {
       await this.radixMove(currentStep[1], currentStep[2], currentStep[3]);
     } else if (currentStep[0] === "p") {
@@ -557,13 +532,13 @@ class Visualizer extends Component {
     }
   };
 
-  space = (e) => {
-    let { steps } = this.state;
-    if (this.state.mode === "spacebar") return this.setState({ mode: "key" });
-    else this.setState({ mode: "spacebar" });
-    steps.push(["m", 0, 1]);
-    this.setState({ steps });
-    // this.stepForward();
+  handleClick = (e) => {
+    e.preventDefault();
+    if (e.path[0].textContent === "Play") {
+      if (this.state.mode === "spacebar") return this.setState({ mode: "key" });
+      else this.setState({ mode: "spacebar" });
+      this.spaceBar();
+    }
   };
 
   textBoxes = () => {
@@ -622,7 +597,6 @@ class Visualizer extends Component {
   radixSort = (nums, steps) => {
     const buckets = [[], [], [], [], [], [], [], [], [], []];
     let digit;
-    let digitPlace = 0;
     for (let digitPlace = 0; digitPlace < 2; digitPlace++) {
       for (let i = 0; i < nums.length; i++) {
         digit = this.getDigit(nums[i], digitPlace);
@@ -641,60 +615,9 @@ class Visualizer extends Component {
       for (let i = 0; i < numbs.length; i++) {
         steps.push(["p", numbs[i], i]);
       }
+      console.log(numbs);
     }
     return steps;
-
-    // for (let i = 0; i < nums.length; i++) {
-    //   steps.push(["r", nums[i], 0]);
-    // }
-
-    // let { buckets } = this.state;
-    // let numbs = [];
-    // for (let i = 0; i < 10; i++) {
-    //   let l = buckets[i].length;
-    //   for (let j = 0; j < l; j++) {
-    //     numbs.push(buckets[i].shift());
-    //   }
-    // }
-
-    // steps.push(["p", numbs]);
-
-    // for (let k = 0; k < 2; k++) {
-    //   for (let i = 0; i < nums.length; i++) {
-    //     steps.push(["r", nums[i], k]);
-    //   }
-    //   let { buckets } = this.state;
-    //   let numbs = [];
-    //   for (let i = 0; i < 10; i++) {
-    //     let l = buckets[i].length;
-    //     for (let j = 0; j < l; j++) {
-    //       numbs.push(buckets[i].shift());
-    //     }
-    //   }
-
-    //   steps.push(["p", numbs]);
-    //   nums = numbs;
-    // }
-    // return steps;
-
-    // for (let k = 0; k < 2; k++) {
-    //   await this.wait();
-    //   for (let i = 0; i < nums.length; i++) {
-    //     await this.radixMove(nums[i], k);
-    //     await this.wait();
-    //   }
-    //   let { buckets } = this.state;
-    //   let numbs = [];
-    //   for (let i = 0; i < 10; i++) {
-    //     let l = buckets[i].length;
-    //     for (let j = 0; j < l; j++) {
-    //       numbs.push(buckets[i].shift());
-    //     }
-    //   }
-
-    //   await this.pickup(numbs);
-    //   nums = numbs;
-    // }
   };
 
   render() {
@@ -733,7 +656,7 @@ class Visualizer extends Component {
           ))}
           ;
         </div>
-        <button onClick={this.space}>Move</button>
+        <button>Play</button>
         <div className="tbox">{text}</div>
         {/* <div
           className="bc"

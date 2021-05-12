@@ -159,81 +159,70 @@ const bubbleSort = (nums, steps, textBoxes = []) => {
 };
 
 const quickSort = (nums, steps) => {
-  let numsDup = nums.map((nums) => nums);
+  let swap = (arr, idx1, idx2) => {
+    [arr[idx1], arr[idx2]] = [arr[idx2], arr[idx1]];
+  };
+  let colors = ["#cffaff", "#cffaff", "#cffaff", "#cffaff", "#cffaff"];
 
-  console.log(numsDup);
-  function pivot(nums, start = 0, end = nums.length - 1) {
-    const swap = (nums, idx1, idx2) => {
-      [nums[idx1], nums[idx2]] = [nums[idx2], nums[idx1]];
-    };
+  let pivot = (nums, start = 0, end = nums.length - 1) => {
     let pivot = nums[start];
     let swapIdx = start;
-    steps.push(["c", start, "orange", colors[start]]);
+    steps.push(["c", start, "orange"]);
     colors[start] = "orange";
-
     for (let i = start + 1; i <= end; i++) {
-      if (i > 1 && colors[i - 1] !== "green") {
-        // blocks[i - 1].style.backgroundColor = "purple";
-      }
-      // blocks[i].style.background = "red";
-      steps.push(["c", i, "red", colors[i]]);
+      steps.push(["c", i, "red"]);
       colors[i] = "red";
-      // await wait();
       if (pivot > nums[i]) {
         swapIdx++;
-        // swap(nums, swapIdx, i);
-        // await swapp(swapIdx, i);
-        steps.push([
-          ["s", swapIdx, i],
-          ["c", swapIdx, "green", colors[swapIdx]],
-        ]);
-        swap(numsDup, i, swapIdx);
+        steps.push(["s", i, swapIdx]);
+        swap(nums, i, swapIdx);
+        steps.push(["c", swapIdx, "green"]);
         colors[swapIdx] = "green";
-        // blocks = document.querySelectorAll(".block");
-        // blocks[swapIdx].style.background = "green";
-        // await wait();
+      } else {
+        steps.push(["c", i, "purple"]);
+        colors[i] = "purple";
       }
     }
 
     steps.push(["s", start, swapIdx]);
-    console.log("==============");
-    swap(numsDup, start, swapIdx);
-    console.log("swapped", numsDup[start], numsDup[swapIdx]);
-    console.log(numsDup);
-    // steps[steps.length - 1] = [];
-    for (let i = 0; i < nums.length; i++)
+    swap(nums, start, swapIdx);
+
+    for (let i = start; i < end + 1; i++)
       if (colors[i] !== "orange") {
-        steps.push(["c", i, "#cffaff", colors[i]]);
+        steps.push(["c", i, "#cffaff"]);
         colors[i] = "#cffaff";
       }
 
-    // blocks[swapIdx].style.backgroundColor = "orange";
-    steps.push(["c", swapIdx, "orange", colors[swapIdx]]);
+    steps.push(["c", swapIdx, "orange"]);
     colors[swapIdx] = "orange";
 
+    console.log(nums + "\n-------------");
     return swapIdx;
-  }
+  };
 
-  function quick(nums, left = 0, right = nums.length - 1) {
+  let quicks = (nums, left = 0, right = nums.length - 1) => {
     let temp = nums.slice(left, right + 1);
     if (temp.length === 1) {
       nums.forEach((i, j) => {
         if (i === temp[0]) {
-          steps.push(["c", j, "orange", colors[j]]);
+          // colors[j] = "orange";
+          // this.colorChange(j, "orange");
+          steps.push(["c", j, "orange"]);
           colors[j] = "orange";
         }
       });
     }
+    // await this.wait();
     if (left < right) {
       let pivotIndex = pivot(nums, left, right); //3
-      quick(nums, left, pivotIndex - 1);
-      quick(nums, pivotIndex + 1, right);
+      quicks(nums, left, pivotIndex - 1);
+      quicks(nums, pivotIndex + 1, right);
     }
     return nums;
-  }
-
-  quick(nums);
+  };
+  quicks(nums);
   console.log(steps);
+  return steps;
 };
 
 const mergeSort = (nums, steps) => {
@@ -365,8 +354,40 @@ const mergeSort = (nums, steps) => {
   return steps;
 };
 
+const radixSort = (nums, steps) => {
+  const getDigit = (num, digit) => {
+    let returnDigit = +num.toString().split("").reverse()[digit];
+    if (returnDigit) return returnDigit;
+    else return 0;
+  };
+
+  const buckets = [[], [], [], [], [], [], [], [], [], []];
+  let digit;
+  for (let digitPlace = 0; digitPlace < 2; digitPlace++) {
+    for (let i = 0; i < nums.length; i++) {
+      digit = getDigit(nums[i], digitPlace);
+      steps.push(["r", nums[i], digit, buckets[digit].length]);
+      buckets[digit].push(nums[i]);
+    }
+
+    let numbs = [];
+    for (let i = 0; i < 10; i++) {
+      let l = buckets[i].length;
+      for (let j = 0; j < l; j++) {
+        numbs.push(buckets[i].shift());
+      }
+    }
+
+    for (let i = 0; i < numbs.length; i++) {
+      steps.push(["p", numbs[i], i]);
+    }
+  }
+  return steps;
+};
+
 module.exports.bubbleSort = bubbleSort;
 module.exports.insertionSort = insertionSort;
 module.exports.selectionSort = selectionSort;
 module.exports.quickSort = quickSort;
 module.exports.mergeSort = mergeSort;
+module.exports.radixSort = radixSort;
