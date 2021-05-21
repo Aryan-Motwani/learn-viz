@@ -72,10 +72,9 @@ class Visualizer extends Component {
       case "Radix Sort":
         this.genBucks();
         this.setState({
-          steps: this.radixSort(this.state.nums, this.state.steps),
+          steps: radixSort(this.state.nums, this.state.steps),
         });
         break;
-
       default:
         break;
     }
@@ -84,7 +83,7 @@ class Visualizer extends Component {
   }
 
   genNums() {
-    let nums = [99, 21, 44, 1, 37, 98, 35, 26];
+    let nums = [99, 31, 44, 43, 37, 98, 77, 26];
     // let nums = [];
     // for (let i = 0; i < 8; i++) nums.push(Math.floor(Math.random() * 100));
     return nums;
@@ -130,9 +129,11 @@ class Visualizer extends Component {
     // this.setState({ newNums });
   };
 
-  moveBack = async (i, j = 0) => {
+  moveBack = async (i, j) => {
     let bars = this.mainDiv.current.children;
-    bars[i].style.transform = `translate(${250 + 64 * i}px,0px)`;
+    let barArray = Array.from(bars).map((i) => +i.textContent);
+    let idx = barArray.indexOf(j);
+    bars[idx].style.transform = `translate(${250 + 64 * i}px,0px)`;
   };
 
   correctSwap = (arr, start, end) => {
@@ -326,17 +327,20 @@ class Visualizer extends Component {
       let start = nums.indexOf(arr1[0]);
       let end = nums.indexOf(arr2[arr2.length - 1]);
 
+      let newList = nums.map((i) => i);
+
       for (let o = 0; o < newNums.length; o++)
-        if (newNums[o]) nums[o] = newNums[o];
+        if (newNums[o]) newList[o] = newNums[o];
 
       // for (let n = 0; n < newNums.length; n++) if (newNums[n]) this.moveBack(n);
       for (let n = 0; n < newNums.length; n++)
-        if (newNums[n]) steps.push(["b", n]);
+        if (newNums[n]) steps.push(["b", n, newNums[n]]);
 
       // this.correctSwap(start, end);
-      steps.push(["k", nums, start, end]);
+      steps.push(["k", newList, start, end]);
       // await this.wait();
 
+      console.log(newList);
       return results;
     };
 
@@ -538,6 +542,7 @@ class Visualizer extends Component {
       if (this.state.mode === "spacebar") return this.setState({ mode: "key" });
       else this.setState({ mode: "spacebar" });
       this.spaceBar();
+    } else if (e.path[0].textContent === "Rev") {
     }
   };
 
@@ -585,7 +590,6 @@ class Visualizer extends Component {
     let barArray = Array.from(bars).map((i) => +i.textContent);
     let idx = barArray.indexOf(val);
     bars[idx].style.transform = `translate(${250 + (i * 64 + 10)}px)`;
-    this.swapNodes(i, idx);
   };
 
   getDigit(num, digit) {
@@ -615,7 +619,8 @@ class Visualizer extends Component {
       for (let i = 0; i < numbs.length; i++) {
         steps.push(["p", numbs[i], i]);
       }
-      console.log(numbs);
+
+      nums = numbs;
     }
     return steps;
   };
@@ -623,7 +628,6 @@ class Visualizer extends Component {
   render() {
     let bucks = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     let { nums, text } = this.state;
-    // console.log(buckets);
     return (
       <div className="bar-main">
         {/* <button style={{ transform: "translate(80px)" }}>Random</button>
@@ -656,7 +660,8 @@ class Visualizer extends Component {
           ))}
           ;
         </div>
-        <button>Play</button>
+        <button style={{ transform: "translate(50px)" }}>Play</button>
+        <button>Rev</button>
         <div className="tbox">{text}</div>
         {/* <div
           className="bc"

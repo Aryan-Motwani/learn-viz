@@ -16,8 +16,8 @@
 
   display: flex;
 
-  transition: all;
-  transition-duration: 2s;
+  /* transition: all;
+  transition-duration: 2s; */
 }
 
 label {
@@ -31,8 +31,8 @@ label {
   height: 5px;
   width: 30px;
   background-color: black;
-  transition: all;
-  transition-duration: 2s;
+  /* transition: all;
+  transition-duration: 2s; */
 }
 
 .arrowhead {
@@ -44,11 +44,18 @@ label {
 
   border-left: 8px solid black;
 
-  transition: all;
-  transition-duration: 2s;
+  /* transition: all;
+  transition-duration: 2s; */
 }
 
 .arrow {
   transition: all;
   transition-duration: 2s;
+}
+
+.notransition {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
 }

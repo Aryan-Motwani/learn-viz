@@ -10,12 +10,15 @@ export default class LinkedList extends Component {
       num: "",
       pos: "",
       del: "",
+      searchVal: "",
     };
   }
 
   componentDidMount() {
     this.genList();
+    // this.high(2);
   }
+
   async wait() {
     await new Promise((resolve) =>
       setTimeout(() => {
@@ -24,7 +27,7 @@ export default class LinkedList extends Component {
     );
   }
 
-  genNode = (x, y, value, i = 0) => {
+  genNode = (x, y, value, i = -1) => {
     let mainDiv = this.mainDiv.current;
     let demoDiv = this.demoDiv.current;
 
@@ -33,50 +36,11 @@ export default class LinkedList extends Component {
     newNode.style.transform = `translate(${x}px,${y}px)`;
     newNode.children[0].textContent = value;
 
-    if (i === 0) mainDiv.append(newNode);
+    if (i === -1) mainDiv.append(newNode);
     else mainDiv.insertBefore(newNode, mainDiv.children[i * 2]);
   };
 
-  genLinee = (i, j, hasArrow, k = -1) => {
-    let mainDiv = this.mainDiv.current;
-    let demoDiv = this.demoDiv.current;
-
-    let nodeOne = mainDiv.children[i];
-    let nodeTwo = mainDiv.children[j];
-
-    let t1 = nodeOne.style.transform;
-    let t2 = nodeTwo.style.transform;
-
-    let x1 = +t1.substring(10, t1.indexOf("p"));
-    let y1 = +t1.substring(t1.indexOf(" ") + 1, t1.indexOf(")") - 2);
-    let x2 = +t2.substring(10, t2.indexOf("p"));
-    let y2 = +t2.substring(t2.indexOf(" ") + 1, t2.indexOf(")") - 2);
-
-    let arrow = demoDiv.children[1].cloneNode(true);
-    let line = arrow.children[0];
-    let arrowhead = arrow.children[1];
-    arrow.style.opacity = 1;
-
-    if (y1 === y2) {
-      line.style.transform = `translate(${x1 + 35}px,${y1 + 15}px)`;
-      line.style.width = `${hasArrow ? x2 - x1 - 30 - 10 : x2 - x1 - 30}px`;
-      if (hasArrow) {
-        arrowhead.style.transform = `translate(${x1 + 69}px,${y1 + 10}px)`;
-      } else {
-        arrowhead.style.opacity = 0;
-      }
-    } else {
-    }
-
-    if (k === -1) mainDiv.append(arrow);
-    else
-      mainDiv.insertBefore(
-        arrow,
-        mainDiv.children[this.state.nums.length + i + 1]
-      );
-  };
-
-  genLine = (i, k) => {
+  genLine = (i, k = -1) => {
     let mainDiv = this.mainDiv.current;
     let demoDiv = this.demoDiv.current;
 
@@ -87,7 +51,7 @@ export default class LinkedList extends Component {
     line.style.width = `35px`;
     line.style.transform = `translate(${435 + i * 75}px,15px)`;
     arrowhead.style.transform = `translate(${470 + i * 75}px,10px)`;
-    if (!k) {
+    if (k == -1) {
       mainDiv.append(arrow);
     } else {
       mainDiv.insertBefore(arrow, mainDiv.children[k + 1]);
@@ -103,7 +67,7 @@ export default class LinkedList extends Component {
     nums.forEach((n, i) => {
       this.genNode(400 + i * 75, 0, n);
       if (i < nums.length - 1) {
-        this.genLine(i, false);
+        this.genLine(i);
       }
     });
 
@@ -163,6 +127,12 @@ export default class LinkedList extends Component {
     }
   };
 
+  high = async (i) => {
+    let mainDiv = this.mainDiv.current;
+    mainDiv.children[0].style.backgroundColor = "orange";
+    mainDiv.children[0].style.borderColor = "orange";
+  };
+
   addNode = async (i, value) => {
     let { nums } = this.state;
     let demoDiv = this.demoDiv.current;
@@ -170,9 +140,36 @@ export default class LinkedList extends Component {
     nums = nums.slice(0, i).concat(value).concat(nums.slice(i, nums.length));
     this.setState({ nums });
 
+    // Last Index
     if (i == nums.length - 1) {
       this.genNode(400 + i * 75, 0, value, i);
       this.genLine(i - 1);
+      return;
+    }
+
+    if (i === 0) {
+      this.genNode(400 + i * 75, 0, value, i);
+      this.genLine(0, 0);
+      mainDiv.children[0].style.opacity = 0;
+      mainDiv.children[1].style.opacity = 0;
+      for (let l = (i + 1) * 2; l < nums.length * 2 - 1; l++) {
+        if (l % 2 === 0)
+          mainDiv.children[l].style.transform = `translate(${
+            400 + (l / 2) * 75
+          }px)`;
+        else {
+          mainDiv.children[l].children[0].style.transform = `translate(${
+            435 + 75 * Math.floor(l / 2)
+          }px,15px)`;
+          console.log(`translate(${435 + 75 * (i + 1)}px,15px)`);
+          mainDiv.children[l].children[1].style.transform = `translate(${
+            470 + 75 * Math.floor(l / 2)
+          }px,10px)`;
+        }
+      }
+      await this.wait();
+      mainDiv.children[0].style.opacity = 1;
+      mainDiv.children[1].style.opacity = 1;
       return;
     }
 
@@ -354,6 +351,24 @@ export default class LinkedList extends Component {
     console.log(nums);
   };
 
+  handleSearch = async (evt) => {
+    evt.preventDefault();
+    let { searchVal, nums } = this.state;
+    let mainDiv = this.mainDiv.current;
+    searchVal++;
+
+    for (let i = 0; i < searchVal * 2 - 1; i++) {
+      if (i % 2 == 0) mainDiv.children[i].style.borderColor = "orange";
+      else mainDiv.children[i].children[0].style.backgroundColor = "orange";
+      await this.wait();
+    }
+
+    // for (let i = 0; i < mainDiv.children.length; i++) {
+    //   if (i % 2 == 0) mainDiv.children[i].style.borderColor = "black";
+    //   else mainDiv.children[i].children[0].style.backgroundColor = "black";
+    // }
+  };
+
   render() {
     return (
       <div>
@@ -367,7 +382,9 @@ export default class LinkedList extends Component {
             <div className="arrowhead"></div>
           </div>
         </div>
+
         <div ref={this.mainDiv} className="mainDiv"></div>
+
         <form onSubmit={this.handleSubmit}>
           <input
             onChange={this.handleChange}
@@ -384,6 +401,7 @@ export default class LinkedList extends Component {
           ></input>
           <button style={{ transform: "translate(5px,-490px)" }}>add</button>
         </form>
+
         <form onSubmit={this.handleDelete}>
           <input
             onChange={this.handleChange}
@@ -393,6 +411,18 @@ export default class LinkedList extends Component {
           ></input>
           <button style={{ transform: "translate(25px,-470px)" }}>
             remove
+          </button>
+        </form>
+
+        <form onSubmit={this.handleSearch}>
+          <input
+            onChange={this.handleChange}
+            style={{ transform: "translate(20px,50px)", width: "15px" }}
+            name="searchVal"
+            value={this.state.searchVal}
+          ></input>
+          <button style={{ transform: "translate(25px,-450px)" }}>
+            search
           </button>
         </form>
       </div>
