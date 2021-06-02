@@ -5,7 +5,6 @@ import "./css/navbar.css"
 
 class Navbar extends Component{
     render(){
-        // let {pathname} = this.props.history.location;
         return (
             <div className="Navbar">
                 <h1><NavLink className="lz-head" to="/">LearnViz</NavLink></h1>

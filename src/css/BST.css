@@ -52,3 +52,10 @@ label {
   transition: all;
   transition-duration: 2s;
 }
+
+.notransition {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+}

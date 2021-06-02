@@ -1,5 +1,11 @@
 let colors = ["#cffaff", "#cffaff", "#cffaff", "#cffaff", "#cffaff"];
 
+const getDigit = (num, digit) => {
+  let returnDigit = +num.toString().split("").reverse()[digit];
+  if (returnDigit) return returnDigit;
+  else return 0;
+};
+
 const selectionSort = (nums, steps) => {
   let i, temp;
   let colors = ["#cffaff", "#cffaff", "#cffaff", "#cffaff", "#cffaff"];
@@ -60,7 +66,7 @@ const insertionSort = (nums, steps) => {
 
   steps.push(["c", 0, "green", colors[0]]);
   colors[0] = "orange";
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 7; i++) {
     for (let j = i + 1; j > 0; j--) {
       steps.push(["c", j, "red", colors[j]]);
       colors[j] = "red";
@@ -355,12 +361,6 @@ const mergeSort = (nums, steps) => {
 };
 
 const radixSort = (nums, steps) => {
-  const getDigit = (num, digit) => {
-    let returnDigit = +num.toString().split("").reverse()[digit];
-    if (returnDigit) return returnDigit;
-    else return 0;
-  };
-
   const buckets = [[], [], [], [], [], [], [], [], [], []];
   let digit;
   for (let digitPlace = 0; digitPlace < 2; digitPlace++) {
@@ -381,6 +381,8 @@ const radixSort = (nums, steps) => {
     for (let i = 0; i < numbs.length; i++) {
       steps.push(["p", numbs[i], i]);
     }
+
+    nums = numbs;
   }
   return steps;
 };

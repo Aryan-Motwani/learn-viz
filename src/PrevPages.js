@@ -1,5 +1,5 @@
 const main = [
-    {"Programming Fundamentals": [
+    {"Programming Languages": [
         "Variables",
         "Memory",
         "Functions",

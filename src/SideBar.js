@@ -5,7 +5,7 @@ import "./css/sidebar.css"
 
 class SideBar extends Component{
     render(){
-        let modes = ["Visualizer","Tutorial","Theory","Code"];
+        let modes = this.props.modes ? this.props.modes :  ["Visualizer","Tutorial","Theory","Code"];
         let propMode = this.props.mode;
         return (
             <div className="SideBar">

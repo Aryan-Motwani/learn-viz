@@ -15,6 +15,7 @@ class Visualizer extends Component {
     super(props);
     this.state = {
       nums: this.genNums(),
+      sortMode: "Bubble Sort",
       stepNum: 0,
       steps: [],
       mode: "key",
@@ -40,10 +41,17 @@ class Visualizer extends Component {
   }
 
   componentDidMount() {
+    this.stepsGen("Bubble Sort");
+    document.addEventListener("keydown", this.handleKey);
+    document.querySelectorAll('button')[0].addEventListener("mousedown", this.handleClick);
+    document.querySelectorAll('button')[1].addEventListener("mousedown", this.handleClick);
+  }
+
+  stepsGen = (sortMode) => {
     this.genBars();
-    switch (this.props.location.pathname.split("/")[2]) {
+    switch (sortMode) {
       case "Bubble Sort":
-        let i = bubbleSort(this.state.nums, this.state.steps);
+        let i = bubbleSort(this.state.nums, []);
         this.setState({
           steps: i.steps,
           textBoxes: i.textBoxes,
@@ -51,7 +59,7 @@ class Visualizer extends Component {
         break;
       case "Insertion Sort":
         this.setState({
-          steps: insertionSort(this.state.nums, this.state.steps),
+          steps: insertionSort(this.state.nums, []),
         });
         break;
       case "Selection Sort":
@@ -72,19 +80,30 @@ class Visualizer extends Component {
       case "Radix Sort":
         this.genBucks();
         this.setState({
-          steps: this.radixSort(this.state.nums, this.state.steps),
+          steps: radixSort(this.state.nums, this.state.steps),
         });
+        break;
+      
+      case "Binary Search":
+        this.setState({
+          steps : this.binarySearch(91)
+        })
+        break;
+
+      case "Linear Search":
+        this.setState({
+          steps : this.linearSearch(91)
+        })
         break;
 
       default:
         break;
     }
-    document.addEventListener("keydown", this.handleKey);
-    document.addEventListener("mousedown", this.handleClick);
   }
 
   genNums() {
-    let nums = [99, 21, 44, 1, 37, 98, 35, 26];
+    // let nums = [99, 31, 44, 43, 37, 98, 77, 26];
+    let nums = [12, 19, 31, 45, 66, 91, 112, 135]
     // let nums = [];
     // for (let i = 0; i < 8; i++) nums.push(Math.floor(Math.random() * 100));
     return nums;
@@ -130,9 +149,11 @@ class Visualizer extends Component {
     // this.setState({ newNums });
   };
 
-  moveBack = async (i, j = 0) => {
+  moveBack = async (i, j) => {
     let bars = this.mainDiv.current.children;
-    bars[i].style.transform = `translate(${250 + 64 * i}px,0px)`;
+    let barArray = Array.from(bars).map((i) => +i.textContent);
+    let idx = barArray.indexOf(j);
+    bars[idx].style.transform = `translate(${250 + 64 * i}px,0px)`;
   };
 
   correctSwap = (arr, start, end) => {
@@ -326,17 +347,20 @@ class Visualizer extends Component {
       let start = nums.indexOf(arr1[0]);
       let end = nums.indexOf(arr2[arr2.length - 1]);
 
+      let newList = nums.map((i) => i);
+
       for (let o = 0; o < newNums.length; o++)
-        if (newNums[o]) nums[o] = newNums[o];
+        if (newNums[o]) newList[o] = newNums[o];
 
       // for (let n = 0; n < newNums.length; n++) if (newNums[n]) this.moveBack(n);
       for (let n = 0; n < newNums.length; n++)
-        if (newNums[n]) steps.push(["b", n]);
+        if (newNums[n]) steps.push(["b", n, newNums[n]]);
 
       // this.correctSwap(start, end);
-      steps.push(["k", nums, start, end]);
+      steps.push(["k", newList, start, end]);
       // await this.wait();
 
+      console.log(newList);
       return results;
     };
 
@@ -396,7 +420,6 @@ class Visualizer extends Component {
 
   async stepForward() {
     let { steps, stepNum } = this.state;
-    // this.setState({ text: textBoxes[stepNum] });
     let currentStep = steps[stepNum];
     if (stepNum >= steps.length) {
       return;
@@ -440,8 +463,6 @@ class Visualizer extends Component {
     } else if (currentStep[0] === "p") {
       await this.pickup(currentStep[1], currentStep[2]);
     }
-
-    // await this.wait();
     // console.log(steps[stepNum]);
     stepNum++;
     this.setState({ stepNum });
@@ -528,7 +549,6 @@ class Visualizer extends Component {
       if (this.state.mode === "spacebar") return this.setState({ mode: "key" });
       else this.setState({ mode: "spacebar" });
       this.spaceBar();
-      // this.space();
     }
   };
 
@@ -538,6 +558,7 @@ class Visualizer extends Component {
       if (this.state.mode === "spacebar") return this.setState({ mode: "key" });
       else this.setState({ mode: "spacebar" });
       this.spaceBar();
+    } else if (e.path[0].textContent === "Rev") {
     }
   };
 
@@ -585,7 +606,6 @@ class Visualizer extends Component {
     let barArray = Array.from(bars).map((i) => +i.textContent);
     let idx = barArray.indexOf(val);
     bars[idx].style.transform = `translate(${250 + (i * 64 + 10)}px)`;
-    this.swapNodes(i, idx);
   };
 
   getDigit(num, digit) {
@@ -615,17 +635,92 @@ class Visualizer extends Component {
       for (let i = 0; i < numbs.length; i++) {
         steps.push(["p", numbs[i], i]);
       }
-      console.log(numbs);
+
+      nums = numbs;
     }
     return steps;
   };
 
+  binarySearch = (x) => {
+    let {nums,steps} = this.state
+    let start=0, end=nums.length-1;
+
+    steps.push([]);
+    nums.forEach((i,j) => {
+      // this.colorChange(j,"orange")
+      steps[0].push(["c",j,"orange"]);
+    })
+    // await this.wait();
+    while (start<=end){
+      let mid=Math.floor((start + end)/2);
+      // this.colorChange(mid,"blue");
+      steps.push(["c",mid,"blue"]);
+      // await this.wait();
+      if (nums[mid]===x){
+        // this.colorChange(mid,"green");
+        steps.push(["c",mid,"green"]);
+        console.log("steps => ")
+        console.log(steps);
+        return steps;
+      }
+      else if (nums[mid] < x) {
+        steps.push([]);
+        for(let i = 0;i < mid;i++)
+          // this.colorChange(i,"#cffaff");
+          steps[steps.length-1].push(["c",i,"#cffaff"]);
+        // await this.wait();
+        start = mid + 1;
+      }
+      else{
+        steps.push([]);
+        for(let i = mid;i < nums.length;i++)
+          // this.colorChange(i,"#cffaff");
+          steps[steps.length-1].push(["c",i,"#cffaff"]);
+        // await this.wait();
+        end = mid - 1;
+      }
+      steps.push(["c",mid,"#cffaff"]);
+      // await this.wait();
+    }
+    // this.setState({steps});
+    return steps;
+  }
+
+  linearSearch = (x) => {
+    let {nums, steps} = this.state;
+
+    for(let i = 0; i < nums.length; i++){
+      steps.push(["c",i,"blue"]);
+      if(nums[i] === x){
+        steps.push(["c",i,"green"]);
+        return steps;
+      }else{
+        steps.push(["c",i,"orange"]);
+      }
+    }
+    return steps;
+  }
+
+  handleSortMode = (e) => {
+    e.preventDefault();
+    this.setState({sortMode : e.target.value, steps : [], stepNum : 0}, () => {
+      this.stepsGen(e.target.value);
+    })
+  }
+
   render() {
     let bucks = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     let { nums, text } = this.state;
-    // console.log(buckets);
     return (
+      
       <div className="bar-main">
+        <select onChange={this.handleSortMode}>
+          <option>Bubble Sort</option>
+          <option>Selection Sort</option>
+          <option>Radix Sort</option>
+          <option>Insertion Sort</option>
+          <option>Quick Sort</option>
+        </select>
         {/* <button style={{ transform: "translate(80px)" }}>Random</button>
         <button style={{ transform: "translate(150px)" }}>Nearly Sorted</button>
         <button style={{ transform: "translate(250px)" }}>Sorted</button>
@@ -656,7 +751,8 @@ class Visualizer extends Component {
           ))}
           ;
         </div>
-        <button>Play</button>
+        <button style={{ transform: "translate(50px)" }}>Play</button>
+        <button>Rev</button>
         <div className="tbox">{text}</div>
         {/* <div
           className="bc"

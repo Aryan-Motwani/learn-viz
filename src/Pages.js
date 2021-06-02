@@ -1,33 +1,23 @@
 const main = {
   Home: [
-    "Programming Fundamentals",
+    "Programming Languages",
     "Algorithms",
     "Data Structures",
     "Database",
-    "C C++",
-    "Java",
+    "C C++"
   ],
-  "Programming Fundamentals": [
-    "Variables",
-    "Memory",
-    "Functions",
-    "Array",
-    "Pointer",
+  "Programming Languages": [
+    "Java",
+    "Python",
+    "C++",
+    "C",
+    "Javascript",
   ],
   Algorithms: ["Searching Algorithms", "Sorting Algorithms"],
-  "Sorting Algorithms": [
-    "Bubble Sort",
-    "Selection Sort",
-    "Insertion Sort",
-    "Merge Sort",
-    "Quick Sort",
-    "Radix Sort",
-  ],
   "Searching Algorithms": ["Linear Search", "Binary Search"],
   "Data Structures": ["Linked List", "Stacks", "Queues", "Trees", "Graphs"],
   Database: [],
   "C C++": [],
-  Java: [],
 };
 
 module.exports = main;
