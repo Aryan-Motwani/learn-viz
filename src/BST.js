@@ -31,6 +31,7 @@ export default class BST extends Component {
   }
 
   async componentDidMount() {
+<<<<<<< HEAD
     let nums = [40,45,43,30,20,35,25,44];
     // let nums = [40];
     let i = `
@@ -39,6 +40,9 @@ export default class BST extends Component {
     [40,45,43,30,20,35,25,44,60,65,41,10,37];
     `
 
+=======
+    let nums = [40];
+>>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
     for (let i = 0; i < nums.length; i++) await this.insert(nums[i]);
   }
 
@@ -95,9 +99,15 @@ export default class BST extends Component {
   async handleSubmit(evt) {
     evt.preventDefault();
     let { inputVal } = this.state;
+<<<<<<< HEAD
     this.insert(inputVal);
     // await this.wait();
     // await this.wait();
+=======
+    this.insertHigh(35);
+    await this.wait();
+    await this.wait();
+>>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
     // await this.wait();
     // this.insert(35);
 
@@ -148,9 +158,14 @@ export default class BST extends Component {
   };
 
   insert = async (value) => {
+<<<<<<< HEAD
     value = +value
     let { mytree, nums, insertNums } = this.state;
     insertNums = [];
+=======
+    console.log("h");
+    let { mytree, nums, insertNums } = this.state;
+>>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
     let newNode = [value, null, null];
     let j = 0;
     let start = "";
@@ -176,7 +191,11 @@ export default class BST extends Component {
         if (current[1] === null) {
           current[1] = newNode;
           // insertNums.push(current[0]);
+<<<<<<< HEAD
           this.setState({ mytree,insertNums });
+=======
+          this.setState({ mytree });
+>>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
 
           // this.bfss(insertNums);
           this.genTreee(parseInt(+start, 2), j, value);
@@ -196,7 +215,11 @@ export default class BST extends Component {
           this.genTreee(parseInt(+start, 2), j, value);
           this.genLines(parseInt(+start, 2), j - 1, value);
 
+<<<<<<< HEAD
           this.setState({ mytree, insertNums });
+=======
+          this.setState({ mytree });
+>>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
           return;
         }
 
@@ -208,6 +231,7 @@ export default class BST extends Component {
   };
 
   insertHigh = async (value) => {
+<<<<<<< HEAD
     value = +value
     let { mytree, nums, insertNums } = this.state;
     insertNums = [];
@@ -215,6 +239,94 @@ export default class BST extends Component {
     let j = 0;
     let start = "";
     insertNums = [];
+=======
+    await new Promise((resolve) => {
+      let { mytree, nums, insertNums } = this.state;
+      let newNode = [value, null, null];
+      let j = 0;
+      let start = "";
+      insertNums = [];
+
+      // nums.push(value);
+      // this.setState({ nums });
+
+      if (mytree[0] === null) {
+        // mytree = newNode;
+        // this.genTreee(0, 0, value);
+        // this.setState({ mytree });
+        return;
+      }
+
+      j++;
+      let current = mytree;
+      insertNums.push(current[0]);
+      while (true) {
+        if (value === current[0]) return undefined;
+        if (value < current[0]) {
+          start += "0";
+          if (current[1] === null) {
+            current[1] = newNode;
+            // insertNums.push(current[0]);
+            // this.setState({ mytree });
+
+            this.bfss(insertNums);
+            resolve();
+            // this.genTreee(parseInt(+start, 2), j, value);
+            // this.genLines(parseInt(+start, 2), j - 1, value);
+
+            return;
+          }
+
+          current = current[1];
+          insertNums.push(current[0]);
+        } else {
+          start += "1";
+          if (current[2] === null) {
+            current[2] = newNode;
+            // insertNums.push(current[0]);
+            this.bfss(insertNums);
+            // this.genTreee(parseInt(+start, 2), j, value);
+            // this.genLines(parseInt(+start, 2), j - 1, value);
+
+            // this.setState({ mytree });
+            resolve();
+
+            return;
+          }
+
+          current = current[2];
+          insertNums.push(current[0]);
+        }
+        j++;
+      }
+    });
+  };
+
+  async wait() {
+    await new Promise((resolve) =>
+      setTimeout(() => {
+        resolve();
+      }, 500)
+    );
+  }
+
+  remove = (value) => {
+    let { mytree } = this.state;
+
+    const removeNode = (node, value) => {
+      if (!node[0]) {
+        return null;
+      }
+
+      if (value == node[0]) {
+        if (!node[1] && !node[2]) {
+          return null;
+        }
+
+        if (!node[1]) {
+          return node[2];
+        }
+>>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
 
     // nums.push(value);
     // this.setState({ nums });
@@ -281,7 +393,11 @@ export default class BST extends Component {
     return data;
   }
 
+<<<<<<< HEAD
   highNums = async (nums) => {
+=======
+  bfss = async (nums) => {
+>>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
     console.log("bfss : " + nums);
 
     for (let i = 0; i < nums.length; i++) {
@@ -293,12 +409,24 @@ export default class BST extends Component {
     // });
   };
 
+<<<<<<< HEAD
   handleDelete = async (e) => {
     e.preventDefault();
       let {deleteVal,nums} = this.state
       console.log(+deleteVal);
     // this.search(+deleteVal)
     this.highNums(this.BFS(nums))
+=======
+  test = async (e) => {
+    e.preventDefault();
+    this.insertHigh(this.state.deleteVal);
+
+    // let arr = [45, 42, 47];
+    // for (let i = 0; i < arr.length; i++) {
+    //   this.highNode(arr[i]);
+    //   await this.wait();
+    // }
+>>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
   };
 
   high = async (i, j) => {
@@ -340,6 +468,7 @@ export default class BST extends Component {
     // }px) rotate(55deg)`;
   };
 
+<<<<<<< HEAD
   search = (val) => {
     let {mytree,nums} = this.state;
     let arr = [];
@@ -362,6 +491,8 @@ export default class BST extends Component {
 
   }
 
+=======
+>>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
   highLine = (i) => {
     let { nums } = this.state;
     let blocksdemo = this.blocksdemo.current;
@@ -377,6 +508,13 @@ export default class BST extends Component {
     let idx = nums.indexOf(i) + nums.length - 1;
     blocksdemo.children[idx].style.borderColor = "orange";
     blocksdemo.children[idx].children[0].style.color = "orange";
+<<<<<<< HEAD
+=======
+  };
+
+  handleDelete = async (evt) => {
+    evt.preventDefault();
+>>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
   };
 
   render() {
@@ -417,7 +555,11 @@ export default class BST extends Component {
             value={this.deleteVal}
           ></input>
           <button
+<<<<<<< HEAD
             // onClick={this.test}
+=======
+            onClick={this.test}
+>>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
             style={{ transform: "translate(40px, -411.5px)" }}
           >
             Remove

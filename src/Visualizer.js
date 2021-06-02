@@ -83,6 +83,7 @@ class Visualizer extends Component {
           steps: radixSort(this.state.nums, this.state.steps),
         });
         break;
+<<<<<<< HEAD
       
       case "Binary Search":
         this.setState({
@@ -96,14 +97,20 @@ class Visualizer extends Component {
         })
         break;
 
+=======
+>>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
       default:
         break;
     }
   }
 
   genNums() {
+<<<<<<< HEAD
     // let nums = [99, 31, 44, 43, 37, 98, 77, 26];
     let nums = [12, 19, 31, 45, 66, 91, 112, 135]
+=======
+    let nums = [99, 31, 44, 43, 37, 98, 77, 26];
+>>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
     // let nums = [];
     // for (let i = 0; i < 8; i++) nums.push(Math.floor(Math.random() * 100));
     return nums;
