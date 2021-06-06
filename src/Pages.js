@@ -1,10 +1,9 @@
 const main = {
   Home: [
     "Programming Languages",
-    "Algorithms",
-    "Data Structures",
-    "Database",
-    "C C++"
+    "Sorting Algorithms",
+    "Searching Algorithms",
+    "Linked List", "Stacks", "Queues", "Trees", "Graphs"
   ],
   "Programming Languages": [
     "Java",

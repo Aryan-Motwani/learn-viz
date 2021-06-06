@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import main from "./Pages";
 import { withRouter } from "react-router-dom";
 import Box from "./Box";
+import "./css/listpage.css"
 
 class ListPage extends Component {
   constructor(props) {

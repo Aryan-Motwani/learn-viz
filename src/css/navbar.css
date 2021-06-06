@@ -1,6 +1,6 @@
 .Navbar{
     display: flex;
-    background: #ccc;
+    background: rgb(0, 0, 0);
     justify-content: space-between;
 }
 
@@ -18,7 +18,7 @@
 .Navbar ul .nav-link{
     color: #f4f4f4;
     display: inline-block;
-    margin-left: 15px;
+    margin-left: 20px;
     text-decoration: none;
     padding: 5px;
 }

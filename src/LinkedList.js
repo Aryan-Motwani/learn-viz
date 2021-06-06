@@ -11,7 +11,6 @@ export default class LinkedList extends Component {
       pos: "",
       del: "",
       searchVal: "",
-<<<<<<< HEAD
       stepNum: 0,
       steps: [
         // ["d",2],
@@ -33,19 +32,13 @@ export default class LinkedList extends Component {
       ],
       newVals: [],
       mode: "spacebar",
-=======
->>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
     };
   }
 
   componentDidMount() {
     this.genList();
-<<<<<<< HEAD
     document.addEventListener("keydown", this.handleKey);
     document.querySelector("#play-btn").addEventListener("mousedown", this.handleClick);
-=======
-    // this.high(2);
->>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
   }
 
   async wait() {
@@ -137,10 +130,7 @@ export default class LinkedList extends Component {
       return;
     }
 
-<<<<<<< HEAD
     // First Index
-=======
->>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
     if (i === 0) {
       this.genNode(400 + i * 75, 0, value, i);
       this.genLine(0, 0);
@@ -161,10 +151,6 @@ export default class LinkedList extends Component {
           }px,10px)`;
         }
       }
-<<<<<<< HEAD
-
-=======
->>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
       await this.wait();
       mainDiv.children[0].style.opacity = 1;
       mainDiv.children[1].style.opacity = 1;
@@ -423,7 +409,6 @@ export default class LinkedList extends Component {
     // }
   };
 
-<<<<<<< HEAD
   GenNode = async (i,value) => {
     let {nums} = this.state;
     let x = 400 + i * 75;
@@ -836,26 +821,6 @@ export default class LinkedList extends Component {
     }
   }
 
-=======
-  handleSearch = async (evt) => {
-    evt.preventDefault();
-    let { searchVal, nums } = this.state;
-    let mainDiv = this.mainDiv.current;
-    searchVal++;
-
-    for (let i = 0; i < searchVal * 2 - 1; i++) {
-      if (i % 2 == 0) mainDiv.children[i].style.borderColor = "orange";
-      else mainDiv.children[i].children[0].style.backgroundColor = "orange";
-      await this.wait();
-    }
-
-    // for (let i = 0; i < mainDiv.children.length; i++) {
-    //   if (i % 2 == 0) mainDiv.children[i].style.borderColor = "black";
-    //   else mainDiv.children[i].children[0].style.backgroundColor = "black";
-    // }
-  };
-
->>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
   render() {
     return (
       <div>
@@ -912,7 +877,6 @@ export default class LinkedList extends Component {
             search
           </button>
         </form>
-<<<<<<< HEAD
         <form onSubmit={this.handleCreate}>
           <input
             onChange={this.handleChange}
@@ -925,8 +889,6 @@ export default class LinkedList extends Component {
           </button>
         </form>
         <button id="play-btn">Play</button>
-=======
->>>>>>> 4fd6a72c85070360b9a3e5cc0a154c6fa28cdcd3
       </div>
     );
   }
