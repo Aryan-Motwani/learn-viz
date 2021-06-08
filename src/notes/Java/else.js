@@ -6,7 +6,7 @@ class Else extends Component {
         let title = this.props.match.params.sub_category;
         let {mode} = this.props;
         return (
-            <div>
+            <div className="info-main">
                 <h3 className="sub-head">Java Conditions and If Statements</h3>
                 <p>Java supports the usual logical conditions from mathematics:</p>
                 <ul>
@@ -17,7 +17,7 @@ class Else extends Component {
                 <h3>The if Statement</h3>
                 <p>Use the if statement to specify a block of Java code to be executed if a condition is true.</p>
                 <h3>Syntax :-</h3>
-                <pre>
+                <pre className="code">
                     <code>
                     {
 `
