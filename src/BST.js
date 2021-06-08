@@ -31,7 +31,7 @@ export default class BST extends Component {
   }
 
   async componentDidMount() {
-    let nums = [40,45,43,30,20,35,25,44];
+    let nums = [40,30,20,35,25];
     for (let i = 0; i < nums.length; i++) await this.insert(nums[i]);
   }
 
@@ -193,10 +193,76 @@ export default class BST extends Component {
     }
   };
 
-  searchVal = (val) => {
-    // val = 30
-
+  treeArray = () => {
     let {mytree} = this.state;
+    let treeData = [[,],[,,],[,,,,],[,,,,,,,,]]
+
+    // Root
+    if(mytree[0]){
+      treeData[0][0] = mytree[0];
+
+      // Left
+      if(mytree[1]){
+        treeData[1][0] = mytree[1][0];
+
+        // Left's right-left
+        if(mytree[1][1]){
+          treeData[2][0] = mytree[1][1][0];
+
+          if(mytree[1][1][1]) treeData[3][0] = mytree[1][1][1][0];
+          if(mytree[1][1][2]) treeData[3][1] = mytree[1][1][2][0];
+        }
+
+        if(mytree[1][2]){
+          treeData[2][1] = mytree[1][2][0];
+
+          if(mytree[1][2][1]) treeData[3][2] = mytree[1][2][1][0];
+          if(mytree[1][2][2]) treeData[3][3] = mytree[1][2][2][0];
+        }
+      
+      }
+
+
+    // Right
+    if(mytree[2]){
+      treeData[1][1] = mytree[2][0];
+
+      // Right's right-left
+      if(mytree[2][1]){
+        treeData[2][2] = mytree[2][1][0];
+
+        if(mytree[2][1][1]) treeData[3][4] = mytree[2][1][1][0];
+        if(mytree[2][1][2]) treeData[3][5] = mytree[2][1][2][0];
+      }
+
+      if(mytree[2][2]){
+        treeData[2][3] = mytree[2][2][0];
+
+        if(mytree[2][2][1]) treeData[3][6] = mytree[2][2][1][0];
+        if(mytree[2][2][2]) treeData[3][7] = mytree[2][2][2][0];
+      }
+
+    }
+
+
+    }
+    return treeData;
+  }
+
+  searchVal = (val) => {
+    let {mytree} = this.state;
+    let treeArray = this.treeArray();
+
+
+    let i = treeArray.map(i => i.includes(val)).indexOf(true);
+    if(i === -1) return false;
+    let j = treeArray[i].indexOf(val);
+
+    console.log(i,j);
+
+
+    return
+    // let {mytree} = this.state;
 
     if(val === mytree[0]) return [];
 

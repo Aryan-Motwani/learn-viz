@@ -1,25 +1,18 @@
 import React, { Component } from "react";
 import {withRouter} from 'react-router-dom';
 import topics from './notes/Java';
+import Else from './notes/Java/else';
 
-
-class SubCategory extends Component {
+class Language extends Component {
     render(){
         let title = this.props.match.params.sub_category;
         let {mode} = this.props;
-        // console.log(topics.topics);
         return (
             <div>
-                <h1>{title}</h1>
-                <h3>{mode}</h3>
-                <pre>
-                    <code>
-                        {topics.topics[mode]}
-                    </code>
-                </pre>
+                <Else />
             </div>
         )
     }
 }
 
-export default withRouter(SubCategory);
+export default withRouter(Language);

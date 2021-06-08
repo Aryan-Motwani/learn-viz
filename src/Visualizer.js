@@ -102,8 +102,8 @@ class Visualizer extends Component {
   }
 
   genNums() {
-    // let nums = [99, 31, 44, 43, 37, 98, 77, 26];
-    let nums = [12, 19, 31, 45, 66, 91, 112, 135]
+    let nums = [31, 44, 43, 37, 98, 77, 26];
+    // let nums = [12, 19, 31, 45, 66, 91, 112, 135]
     // let nums = [];
     // for (let i = 0; i < 8; i++) nums.push(Math.floor(Math.random() * 100));
     return nums;
@@ -112,7 +112,7 @@ class Visualizer extends Component {
   genBars() {
     let { nums } = this.state;
     let bars = this.mainDiv.current.children;
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < nums.length; i++) {
       bars[i].classList.add("Bar");
       bars[i].children[0].textContent = nums[i];
       bars[i].style.transform = `translate(${250 + (i * 64 + 10)}px)`;
@@ -469,14 +469,14 @@ class Visualizer extends Component {
   }
 
   async spaceBar() {
-    let { steps, textBoxes, stepNum, delay } = this.state;
+    let { steps,nums, textBoxes, stepNum, delay } = this.state;
     this.setState({ mode: "spacebar", text: textBoxes[stepNum] });
     for (let i = stepNum; i < steps.length; i++) {
       if (this.state.mode === "key") {
         break;
       }
       let blocks = this.mainDiv.current.children;
-      for (let j = 0; j < 8; j++) {
+      for (let j = 0; j < nums.length; j++) {
         blocks[j].style["transition-duration"] = delay;
       }
 
