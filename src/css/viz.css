@@ -82,3 +82,11 @@ label {
   color: white;
   width: 300px;
 }
+
+.theory{
+  background-color: burlywood;
+  display: inline-block;
+  width: 400px;
+  height: 150px;
+  
+}

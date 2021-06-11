@@ -777,6 +777,27 @@ class Visualizer extends Component {
   }
 
   render() {
+    let a;
+    switch(this.state.sortMode){
+      case "Bubble Sort":
+        a = <p>Bubble sort, sometimes referred to as sinking sort, is a simple sorting algorithm that repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order. The pass through the list is repeated until the list is sorted</p>;
+        break;
+
+        case "Selection Sort":
+        a = <p>selection sort is an in-place comparison sorting algorithm. It has an O(n2) time complexity, which makes it inefficient on large lists, and generally performs worse than the similar insertion sort. Selection sort is noted for its simplicity</p>
+        break;
+          
+        case "Insertion Sort":
+        a = <p>Insertion sort is a simple sorting algorithm that builds the final sorted array (or list) one item at a time. It is much less efficient on large lists than more advanced algorithms such as quicksort, heapsort, or merge sort.</p>
+        break;
+
+        case "Quick Sort":
+        a = <p>Quicksort is a divide-and-conquer algorithm. It works by selecting a 'pivot' element from the array and partitioning the other elements into two sub-arrays, according to whether they are less than or greater than the pivot.</p>
+        break;
+
+        case "Radix Sort":
+        a = <p>radix sort is a non-comparative sorting algorithm. It avoids comparison by creating and distributing elements into buckets according to their radix. For elements with more than one significant digit, this bucketing process is repeated for each digitPlace</p>
+    }
     let bucks = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     let { nums, text, isCreateOn } = this.state;
     isCreateOn = +isCreateOn
@@ -820,6 +841,10 @@ class Visualizer extends Component {
           <button onClick={this.randomButton} className="btn" style={{transform : "translate(-210px,-50px)", opacity:isCreateOn }}>Random</button>
           <button onClick={this.sortedButton} className="btn" style={{transform : "translate(-125px,-50px)", opacity:isCreateOn }}>Sorted</button>
         </form>
+        <div style={{transform: "translate(900px,-100px)"}} className="theory">
+          <h3>{this.state.sortMode}</h3>
+          {a}
+        </div>
       </div>
     );
   }
