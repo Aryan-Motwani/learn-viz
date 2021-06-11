@@ -18,7 +18,11 @@ const selectionSort = (nums, steps) => {
     colors[i] = "red";
 
     for (let i = j + 1; i < nums.length; i++) {
-      steps.push(["c", i, "green", colors[i]]);
+      if(Array.isArray(steps[steps.length-1][0]))
+        steps[steps.length-1].push(["c", i, "green", colors[i]]);
+      else
+        steps.push(["c", i, "green", colors[i]]);
+
       colors[i] = "green";
 
       if (nums[i] < nums[lowest]) {
@@ -30,14 +34,15 @@ const selectionSort = (nums, steps) => {
         colors[i] = "red";
         lowest = i;
       } else {
-        steps.push(["c", i, "#cffaff", colors[i]]);
+        steps.push([])
+        steps[steps.length-1].push(["c", i, "#cffaff", colors[i]]);
         colors[i] = "#cffaff";
       }
     }
-    steps.push(
-      ["c", j, "red", colors[j]],
-      ["c", lowest, "red", colors[lowest]]
-    );
+    // steps.push(
+      // ["c", j, "red", colors[j]],
+      // ["c", lowest, "red", colors[lowest]]
+    // );
     colors[j] = "red";
     colors[lowest] = "red";
     if (lowest !== j) {
@@ -154,11 +159,8 @@ const bubbleSort = (nums, steps, textBoxes = []) => {
       break;
     }
   }
-  console.log(steps.length, textBoxes.length);
   for (let i = 0; i < textBoxes.length; i++) {
-    console.log(steps[i]);
-    console.log(textBoxes[i]);
-    console.log("===========");
+    
   }
 
   return { steps, textBoxes };
@@ -363,6 +365,7 @@ const mergeSort = (nums, steps) => {
 const radixSort = (nums, steps) => {
   const buckets = [[], [], [], [], [], [], [], [], [], []];
   let digit;
+  // steps.push(["b",1])
   for (let digitPlace = 0; digitPlace < 2; digitPlace++) {
     for (let i = 0; i < nums.length; i++) {
       digit = getDigit(nums[i], digitPlace);
@@ -384,6 +387,7 @@ const radixSort = (nums, steps) => {
 
     nums = numbs;
   }
+  // steps.push(["b",0])
   return steps;
 };
 

@@ -9,22 +9,20 @@ import BST from "./BST";
 import LinkedList from "./LinkedList";
 import Language from "./Language";
 import languages from "./notes/notes";
+import Stack from "./Stack";
+import Queue from "./Queue";
+import Search from "./Search";
 
 class SubCategory extends Component {
   constructor(props) {
     super(props);
-    this.state = { mode: "Visualizer", sortMode : "Bubble Sort" };
+    this.state = { mode: "Visualizer", sortMode : "Selection Sort" };
     this.changeMode = this.changeMode.bind(this);
+    this.child = React.createRef();
   }
 
   changeMode(e) {
     this.setState({ mode: e.target.textContent });
-  }
-
-  handleSortMode = (e) => {
-    e.preventDefault();
-    this.setState({sortMode : e.target.value})
-    this.render()
   }
 
   render() {
@@ -33,7 +31,6 @@ class SubCategory extends Component {
     let sortingComponent,modes;
     let titles = ["Java","Python","C++","C","Javascript"];
     if(titles.includes(title)){
-      // modes = ["Input","If/Else", "Loops", "Functions","Object Orientation"]
       modes = languages[title];
       console.log(languages);
       sortingComponent = <Language mode={mode} />
@@ -43,11 +40,17 @@ class SubCategory extends Component {
         sortingComponent = <BST />;
       } else if (title === "Linked List") {
         sortingComponent = <LinkedList />;
+      }else if(title === "Stack"){
+        sortingComponent = <Stack />;
+      }else if(title === "Queue"){
+        sortingComponent = <Queue />;
+      }else if(title === "Searching Algorithms"){
+        sortingComponent = <Search />;
       } else {
-        sortingComponent = <Visualizer sortMode={sortMode} />;
+        sortingComponent = <Visualizer ref={this.child} sortMode={sortMode} />;
       }
     } else if (mode === "Code") {
-      sortingComponent = <Code title={title} />;
+      sortingComponent = <Code/>;
     } else if (mode === "Theory") {
       sortingComponent = <TheoryPage />;
     }
@@ -55,16 +58,8 @@ class SubCategory extends Component {
       <div className="sub">
         <SideBar mode={mode} modes={modes} handleClick={this.changeMode} />
         <div>
-          <h1>{/* {title}({mode}) */}</h1>
           {sortingComponent}
         </div>
-        <select onChange={this.handleSortMode}>
-          <option>Bubble Sort</option>
-          <option>Selection Sort</option>
-          <option>Radix Sort</option>
-          <option>Insertion Sort</option>
-          <option>Quick Sort</option>
-        </select>
       </div>
     );
   }

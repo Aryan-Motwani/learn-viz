@@ -31,7 +31,7 @@ export default class BST extends Component {
   }
 
   async componentDidMount() {
-    let nums = [40,30,20,35,25];
+    let nums = [40,30,20,35,37,50,45,55,53,60];
     for (let i = 0; i < nums.length; i++) await this.insert(nums[i]);
   }
 
@@ -249,43 +249,84 @@ export default class BST extends Component {
     return treeData;
   }
 
-  searchVal = (val) => {
+  searchVal = async (val) => {
     let {mytree} = this.state;
     let treeArray = this.treeArray();
 
-
     let i = treeArray.map(i => i.includes(val)).indexOf(true);
-    if(i === -1) return false;
-    let j = treeArray[i].indexOf(val);
+    let returnArray = [];
 
+    // Element Not Found
+    if(i === -1){
+      return false;
+    }
+
+    let j = treeArray[i].indexOf(val);
     console.log(i,j);
 
+    if(i === 0){
+      this.highNode(treeArray[0][0])
+      return
+    }
 
-    return
-    // let {mytree} = this.state;
+    if(i === 1){
+      this.highNode(treeArray[0][0]);
+      await this.wait()
+      this.highNode(treeArray[1][j])
+      return
+    }
 
-    if(val === mytree[0]) return [];
+    if(i === 2){
+      this.highNode(treeArray[0][0]);
+      await this.wait()
 
-    if(mytree[1][0])
-      if(mytree[1][0] === val) return [mytree[0]];
-    else 
-      return "h"
-    if(mytree[2][0]) if(mytree[2][0] === val) return [mytree[0]];
-    else return
-
-    // Left
-    if(mytree[1][1][0]) if(mytree[1][1][0] === val) return [mytree[0], mytree[1][0]];
-    if(mytree[1][2][0]) if(mytree[1][2][0] === val) return [mytree[0], mytree[1][0]];
-    if(mytree[2][1][0]) if(mytree[2][1][0] === val) return [mytree[0], mytree[2][0]];
-    if(mytree[2][2][0]) if(mytree[2][2][0] === val) return [mytree[0], mytree[2][0]];
+      
+      if(j > 1)
+        this.highNode(treeArray[1][1])
+      else
+        this.highNode(treeArray[1][0])
+      
+      await this.wait()
 
 
-    if(mytree[1][1][1][0]) if(mytree[1][1][1][0] === val) return [mytree[0], mytree[1][0], mytree[1][1][0]];
-    // if(mytree[1][1][2][0]) if(mytree[1][1][2][0] === val) return [mytree[0], mytree[1][0], mytree[1][1][2][0]];
+      this.highNode(treeArray[2][j])
+      return
+    }
 
-    // if(mytree[1][2][1][0]) if(mytree[1][2][1][0] === val) return [mytree[0], mytree[1][0], mytree[1][1][1][0]];
-    // if(mytree[1][2][2][0]) if(mytree[1][2][2][0] === val) return [mytree[0], mytree[1][0], mytree[1][1][2][0]];
+  if(i === 3){
+    this.highNode(treeArray[0][0]);
+    returnArray.push(treeArray[0][0]);
+    await this.wait()
+    let d = "left";
 
+    if(treeArray[0][0] > val){
+      this.highNode(treeArray[1][0]);
+      returnArray.push(treeArray[1][0])
+      await this.wait();
+    }else{
+      this.highNode(treeArray[1][1]);
+      returnArray.push(treeArray[1][0])
+      await this.wait();
+      d = "right"
+    }
+
+    if(d === "left"){
+      if(treeArray[3].indexOf(val) < 2){
+        this.highNode(treeArray[2][0])
+      }else if(treeArray[3].indexOf(val) < 4){
+        this.highNode(treeArray[2][1])
+      }
+      }else{
+        if(treeArray[3].indexOf(val) < 6){
+          this.highNode(treeArray[2][2])
+        }else if(treeArray[3].indexOf(val) < 8){
+          this.highNode(treeArray[2][3])
+        }
+      }
+    }
+
+    await this.wait();
+    this.highNode(val)
   };
 
   async wait() {
@@ -316,7 +357,7 @@ export default class BST extends Component {
   }
 
   highNums = async (nums) => {
-    console.log("bfss : " + nums);
+    // console.log("bfss : " + nums);
 
     for (let i = 0; i < nums.length; i++) {
       await this.wait();
@@ -329,7 +370,9 @@ export default class BST extends Component {
 
   handleDelete = async (e) => {
     e.preventDefault();
-      let {deleteVal,nums} = this.state
+    let {deleteVal,nums} = this.state
+
+    // console.log(this.insertHigh(+deleteVal));
     console.log(this.searchVal(+deleteVal));
   };
 
@@ -372,28 +415,6 @@ export default class BST extends Component {
     // }px) rotate(55deg)`;
   };
 
-  search = (val) => {
-    let {mytree,nums} = this.state;
-    let arr = [];
-
-    // Empty Tree
-    if(!mytree[0]) return;
-
-    // Root
-    if(mytree[0] === val){
-      console.log("root");
-    }
-
-
-    let i = nums.indexOf(val);
-    // console.log(this.blocksdemo.current.children[i+nums.length-1])
-    // console.log(i+nums.length);
-
-    this.insertHigh(val);
-    // console.log(this.state.insertNums);
-
-  }
-
   highLine = (i) => {
     let { nums } = this.state;
     let blocksdemo = this.blocksdemo.current;
@@ -410,6 +431,36 @@ export default class BST extends Component {
     blocksdemo.children[idx].style.borderColor = "orange";
     blocksdemo.children[idx].children[0].style.color = "orange";
   };
+
+  insertHigh = (val) => {
+    let treeArray = this.treeArray();
+    let returnArr = [];
+
+    returnArr.push(treeArray[0][0]);
+
+    // Left
+    if(treeArray[0][0] > val){
+      if(!treeArray[1][0]) return returnArr;
+      returnArr.push(treeArray[1][0]);
+
+      if(treeArray[1][0] > val){
+        if(treeArray[2][0]) return returnArr;
+
+        if(treeArray[2][0] > val){
+          returnArr.push(treeArray[2][0]);
+
+        }else{
+
+        }
+      }else{
+        if(treeArray[2][1]) return returnArr;
+      }
+    }
+  }
+
+  DFS = () => {
+    
+  }
 
   render() {
     return (
@@ -432,17 +483,21 @@ export default class BST extends Component {
 
         <form onSubmit={this.handleSubmit}>
           <input
+            className="txt"
+            style={{width: "50px"}}
             type="text"
             name="inputVal"
             onChange={this.handleChange}
             value={this.inputVal}
           ></input>
-          <button style={{ transform: "translate(10px, -411.5px)" }}>
+          <button className="btn" style={{ transform: "translate(5px, -425.5px)" }}>
             Add
           </button>
         </form>
         <form onSubmit={this.handleDelete}>
           <input
+            className="txt"
+            style={{width: "50px"}}
             type="text"
             name="deleteVal"
             onChange={this.handleChange}
@@ -450,9 +505,10 @@ export default class BST extends Component {
           ></input>
           <button
             // onClick={this.test}
-            style={{ transform: "translate(40px, -411.5px)" }}
+            className="btn"
+            style={{ transform: "translate(5px, -390.5px)" }}
           >
-            Remove
+            Search
           </button>
         </form>
       </div>

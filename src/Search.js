@@ -10,12 +10,12 @@ import {
   // mergeSort,
 } from "./genSteps";
 
-class Visualizer extends Component {
+class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
       nums: this.genNums(),
-      sortMode: this.props.sortMode,
+      sortMode: "Binary Search",
       stepNum: 0,
       steps: [],
       mode: "key",
@@ -25,7 +25,9 @@ class Visualizer extends Component {
       newNums: [],
       buckets: [[], [], [], [], [], [], [], [], [], []],
       textBoxes: [],
-      isCreateOn:0
+      searchVal: "",
+      isCreateOn: 0,
+      isSearchOn: 0
     };
 
     this.mainDiv = React.createRef();
@@ -42,13 +44,11 @@ class Visualizer extends Component {
   }
 
   componentDidMount() {
-    this.setState({newNums : this.state.nums})
-    // this.handleSortMode();
-    this.stepsGen("SelectionSort");
+    this.genBars();
     document.addEventListener("keydown", this.handleKey);
-    document.querySelectorAll('button')[0].addEventListener("mousedown", this.handleClick);
-    document.querySelectorAll('button')[1].addEventListener("mousedown", this.handleClick);
-    document.querySelectorAll('button')[1].addEventListener("mousedown", this.handleClick);
+    // document.querySelectorAll('button')[0].addEventListener("mousedown", this.handleClick);
+    // document.querySelectorAll('button')[1].addEventListener("mousedown", this.handleClick);
+    document.querySelector('.play-btn').addEventListener("mousedown", this.searchAlgo);
   }
 
   stepsGen = (sortMode) => {
@@ -97,13 +97,14 @@ class Visualizer extends Component {
       
       case "Binary Search":
         this.setState({
-          steps : this.binarySearch(91)
+          steps : this.binarySearch(this.state.searchVal)
         })
         break;
 
       case "Linear Search":
+          let {searchVal} = this.state;
         this.setState({
-          steps : this.linearSearch(91)
+          steps : this.linearSearch(+searchVal)
         })
         break;
 
@@ -113,8 +114,8 @@ class Visualizer extends Component {
   }
 
   genNums() {
-    let nums = [31, 44, 43, 37, 98, 77, 26];
-    // let nums = [12, 19, 31, 45, 66, 91, 112, 135]
+    // let nums = [31, 44, 43, 37, 98, 77, 26];
+    let nums = [12, 19, 31, 45, 66, 91, 112, 135]
     // let nums = [];
     // for (let i = 0; i < 8; i++) nums.push(Math.floor(Math.random() * 100));
     return nums;
@@ -669,6 +670,8 @@ class Visualizer extends Component {
   };
 
   binarySearch = (x) => {
+      x = +x
+      console.log("x = "+x);
     let {nums,steps} = this.state
     let start=0, end=nums.length-1;
 
@@ -714,6 +717,7 @@ class Visualizer extends Component {
   }
 
   linearSearch = (x) => {
+    console.log("hiiiiiii  "+x);
     let {nums, steps} = this.state;
 
     for(let i = 0; i < nums.length; i++){
@@ -730,9 +734,23 @@ class Visualizer extends Component {
 
   handleSortMode = (e) => {
     e.preventDefault();
-    this.setState({sortMode : e.target.value, steps : [], stepNum : 0}, () => {
-      this.stepsGen(e.target.value);
-    })
+    this.setState({sortMode : e.target.value, steps : [], stepNum : 0})
+    this.genBars();
+  }
+
+  handleNew = (e) => {
+    e.preventDefault();
+    let nums = this.state.newNums.split(",").map(i => +i);
+    this.setState({nums,steps : [], stepNum : 0}, () => {
+    });
+  }
+
+  searchAlgo = (e) => {
+    e.preventDefault();
+      this.stepsGen(this.state.sortMode);
+      this.setState({mode: "spacebar"}, () => {
+        this.spaceBar();
+      })
   }
 
   handleNew = (e) => {
@@ -743,10 +761,7 @@ class Visualizer extends Component {
     });
   }
 
-  handleSome = (e) => {
-    e.preventDefault()
-  }
-
+  
   createButton = (e) => {
     e.preventDefault();
     let {isCreateOn} = this.state;
@@ -754,22 +769,27 @@ class Visualizer extends Component {
     this.setState({isCreateOn});
   }
 
+  searchButton = (e) => {
+    e.preventDefault();
+    let {isSearchOn} = this.state;
+    isSearchOn = isSearchOn ? 0 : 1;
+    this.setState({isSearchOn});
+  }
+
   render() {
     let bucks = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    let { nums, text, isCreateOn } = this.state;
-    isCreateOn = +isCreateOn
-    console.log(isCreateOn);
+    let { nums, isCreateOn, isSearchOn} = this.state;
     return (
       <div className="bar-main">
         <h1>{this.props.sortMode}</h1>
         <select onChange={this.handleSortMode}>
-          <option>Bubble Sort</option>
+          {/* <option>Bubble Sort</option>
           <option>Selection Sort</option>
           <option>Radix Sort</option>
           <option>Insertion Sort</option>
-          <option>Quick Sort</option>
-          <option>Linear Search</option>
+          <option>Quick Sort</option> */}
           <option>Binary Search</option>
+          <option>Linear Search</option>
         </select>
         <div className="main-div" ref={this.mainDiv}>
           {nums.map((i, j) => (
@@ -785,10 +805,19 @@ class Visualizer extends Component {
             </div>
           ))}
         </div>
-        <button className="btn" style={{ transform: "translate(10px,-17px)" }}>Play</button>
+        <button onClick={this.searchButton} className="btn" style={{ transform: "translate(10px,-17px)" }}>Search</button>
+          <input
+            type="number"
+            style={{transform : "translate(95px,450px)", width : "40px", opacity:isSearchOn}}
+            name="searchVal"
+            className="txt"
+            value={this.state.searchVal}
+            onChange={this.handleChange}
+          ></input>
+          <button className="btn play-btn" style={{transform : "translate(100px,-17px)", width:"40px", opacity:isSearchOn}}>Go</button>
         <form onSubmit={this.handleNew}>
         <input
-          style={{transform : "translate(265px,357px)", opacity:isCreateOn}}
+          style={{transform : "translate(265px,385px)", opacity:isCreateOn}}
           type="text"
           name="newNums"
           className="txt"
@@ -805,4 +834,4 @@ class Visualizer extends Component {
   }
 }
 
-export default withRouter(Visualizer);
+export default withRouter(Search);

@@ -1,9 +1,12 @@
 const main = {
   Home: [
-    "Programming Languages",
     "Sorting Algorithms",
+    "Linked List",
+    "Stack",
+    "Queue",
+    "Trees",
     "Searching Algorithms",
-    "Linked List", "Stacks", "Queues", "Trees", "Graphs"
+    "Graphs"
   ],
   "Programming Languages": [
     "Java",
@@ -11,12 +14,7 @@ const main = {
     "C++",
     "C",
     "Javascript",
-  ],
-  Algorithms: ["Searching Algorithms", "Sorting Algorithms"],
-  "Searching Algorithms": ["Linear Search", "Binary Search"],
-  "Data Structures": ["Linked List", "Stacks", "Queues", "Trees", "Graphs"],
-  Database: [],
-  "C C++": [],
+  ]
 };
 
 module.exports = main;

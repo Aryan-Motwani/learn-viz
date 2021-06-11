@@ -61,3 +61,24 @@ button:nth-child(2) {
 label {
   padding-bottom: 10px;
 }
+
+
+.btn{
+  border : none;
+  color: white;
+  /* background-color: #4b65ba; */
+  background-color: #2aa22a;
+  height: 30px;
+  width: 80px;
+  text-align: left;
+  padding-left: 10px;
+}
+
+.txt{
+  background-color: black;
+  border: none;
+  margin: 1px;
+  height: 29px;
+  color: white;
+  width: 300px;
+}

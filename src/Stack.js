@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-export default class LinkedList extends Component {
+export default class Stack extends Component {
   constructor(props) {
     super(props);
     this.demoDiv = React.createRef();
@@ -209,69 +209,22 @@ export default class LinkedList extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
-    let {steps, num, pos, nums } = this.state;
-    pos = +pos;
+    let {steps, num, nums } = this.state;
     num = +num
+    let pos = nums.length
 
-    if(pos === 0){
-      // this.addHead(0,45)
-      steps.push(["a",pos,num]);
-      steps.push(["w"]);
-      steps.push(["g",pos,num]);
-      steps.push(["s",pos]);
-      this.setState({steps});
-      this.spaceBar();
-      return
-    }
-
-    
-
-    if(pos === nums.length){
-      for(let i = 0;i<pos*2-1;i++){
-        steps.push(["h",i,"orange"]);
-      }
-
-      steps.push(["g",pos,num]);
-      steps.push(["s",pos-1]);
-      steps.push(["n"])
-      this.setState({steps});
-      this.spaceBar();
-      return
-    }
-
-    for(let i = 0;i<pos*2;i++){
-      steps.push(["h",i,"orange"]);
-    }
-    
-    steps.push(["h",1,"orange"])
-    steps.push(["g",pos,num])
-    steps.push(["s",pos])
-    steps.push(["m",pos])
-    steps.push(["e",pos,num])
+    steps.push(["g",pos,num]);
+    steps.push(["s",pos-1]);
     steps.push(["n"])
-
-    this.setState({steps})
+    this.setState({steps});
     this.spaceBar();
   };
 
   handleDelete = (e) => {
     e.preventDefault();
-    let { del, steps,nums } = this.state;
-    del = +del;
-
-    if(del === nums.length-1){
-      steps.push(["r",del]);
-    }else if(del === 0){
-      steps.push(["r",del]);
-      steps.push(["b",del]);
-    }else{
-      steps.push(["d",del]);
-      steps.push(["d",del]);
-      steps.push(["w"]);
-      steps.push(["w"]);
-      steps.push(["r",del]);
-      steps.push(["b",del]);
-    }
+    let { steps,nums } = this.state;
+    
+    steps.push(["r",nums.length-1]);
       
     this.setState({steps})
     this.spaceBar();
@@ -821,65 +774,33 @@ export default class LinkedList extends Component {
 
         <div ref={this.mainDiv} className="mainDiv"></div>
 
-        <form onSubmit={this.handleCreate}>
-          <input
-            className="txt"
-            onChange={this.handleChange}
-            style={{ transform: "translate(5px,50px)", width: "100px",height: "20px" }}
-            name="newVals"
-            value={this.state.newVals}
-          ></input>
-          <button className="btn" style={{ transform: "translate(10px,-383px)", height: "22px",width:"60px" }}>
-            create
-          </button>
-        </form>
-
         <form onSubmit={this.handleSubmit}>
           <input
-            className="txt"
             onChange={this.handleChange}
-            style={{ transform: "translate(5px,50px)", width: "30px", height: "20px" }}
+            style={{ transform: "translate(0px,50px)", width: "15px" }}
             name="num"
             value={this.state.num}
           ></input>
-          <input
-            className="txt"
-            onChange={this.handleChange}
-            style={{ transform: "translate(5px,50px)", width: "30px", height: "20px" }}
-            name="pos"
-            placeholder="pos"
-            value={this.state.pos}
-          ></input>
-          <button className="btn" style={{ transform: "translate(45px,-357px)", height: "22px",width:"60px"}}>add</button>
+          <button style={{ transform: "translate(5px,-490px)" }}>push</button>
         </form>
 
         <form onSubmit={this.handleDelete}>
-          <input
-            className="txt"
-            onChange={this.handleChange}
-            style={{ transform: "translate(5px,50px)", width: "30px", height: "20px" }}
-            name="del"
-            value={this.state.del}
-          ></input>
-          <button className="btn" style={{ transform: "translate(80px,-330px)", height: "22px",width:"60px" }}>
-            remove
+          <button style={{ transform: "translate(25px,-470px)" }}>
+            pop
           </button>
         </form>
-
-        <form onSubmit={this.handleSearch}>
+        <form onSubmit={this.handleCreate}>
           <input
-            className="txt"
             onChange={this.handleChange}
-            style={{ transform: "translate(5px,50px)", width: "30px", height: "20px"}}
-            name="searchVal"
-            value={this.state.searchVal}
+            style={{ transform: "translate(20px,50px)", width: "25px" }}
+            name="newVals"
+            value={this.state.newVals}
           ></input>
-          <button className="btn" style={{ transform: "translate(80px,-305px)", height: "22px",width:"60px" }}>
-            search
+          <button style={{ transform: "translate(25px,-430px)" }}>
+            create
           </button>
         </form>
-        
-        <button className="btn" id="play-btn">Play</button>
+        <button id="play-btn">Play</button>
       </div>
     );
   }
