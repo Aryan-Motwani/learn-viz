@@ -2,10 +2,12 @@ import React, { Component } from "react";
 
 export default class TheoryPage extends Component {
   render() {
+    let heading = "hot"
+    console.log(this.props);
     return (
       <div>
-        <h3>Bubble Sort</h3>
-        <p>
+         <h3>{heading}</h3>
+        {/*<p>
           Bubble sort, sometimes referred to as sinking sort, is a simple
           sorting algorithm that repeatedly steps through the list, compares
           adjacent elements and swaps them if they are in the wrong order. The
@@ -33,7 +35,7 @@ export default class TheoryPage extends Component {
           specific scan line (a line parallel to x axis) and with incrementing y
           their order changes (two elements are swapped) only at intersections
           of two lines
-        </p>
+        </p> */}
       </div>
     );
   }

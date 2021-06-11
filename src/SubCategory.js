@@ -56,7 +56,7 @@ class SubCategory extends Component {
     }
     return (
       <div className="sub">
-        <SideBar mode={mode} modes={modes} handleClick={this.changeMode} />
+        {/* <SideBar mode={mode} modes={modes} handleClick={this.changeMode} /> */}
         <div>
           {sortingComponent}
         </div>

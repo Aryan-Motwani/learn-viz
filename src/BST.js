@@ -353,7 +353,7 @@ export default class BST extends Component {
       if (node[2]) queue.push(node[2]);
       myarr.push("")
     }
-    return data,myarr;
+    return data;
   }
 
   highNums = async (nums) => {
@@ -458,8 +458,11 @@ export default class BST extends Component {
     }
   }
 
-  DFS = () => {
-    
+  runBST = (e) => {
+    e.preventDefault();
+    let i = this.BFS();
+    // console.log(i);
+    this.highNums(i);
   }
 
   render() {
@@ -504,13 +507,13 @@ export default class BST extends Component {
             value={this.deleteVal}
           ></input>
           <button
-            // onClick={this.test}
             className="btn"
             style={{ transform: "translate(5px, -390.5px)" }}
           >
             Search
           </button>
         </form>
+        <button onClick={this.runBST} className="btn" style={{ transform: "translate(60px, -355.5px)" }}>BFS</button>
       </div>
     );
   }

@@ -776,6 +776,33 @@ class Search extends Component {
     this.setState({isSearchOn});
   }
 
+  sortedButton = (e) => {
+    e.preventDefault()
+    let nums = [];
+    while(nums.length < this.state.nums.length){
+      var r = Math.floor(Math.random() * 90) + 10;
+      if(nums.indexOf(r) === -1) nums.push(r);
+    }
+    nums.sort((a, b) => a - b);
+    this.setState({nums,steps : [], stepNum : 0}, () => {
+      // this.stepsGen(this.state.sortMode);
+      this.genBars();
+    });
+  }
+
+  randomButton = (e) => {
+    e.preventDefault();
+    let nums = [];
+    while(nums.length < this.state.nums.length){
+        var r = Math.floor(Math.random() * 90) + 10;
+        if(nums.indexOf(r) === -1) nums.push(r);
+    }
+    this.setState({nums,steps : [], stepNum : 0}, () => {
+      this.genBars();
+
+    });
+  }
+
   render() {
     let bucks = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     let { nums, isCreateOn, isSearchOn} = this.state;

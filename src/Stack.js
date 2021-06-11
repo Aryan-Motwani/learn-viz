@@ -761,7 +761,7 @@ export default class Stack extends Component {
   render() {
     return (
       <div>
-        <h1>Linked List</h1>
+        <h1>Stack</h1>
         <div style={{ opacity: 0 }} ref={this.demoDiv}>
           <div className="block">
             <label>0</label>
@@ -774,32 +774,36 @@ export default class Stack extends Component {
 
         <div ref={this.mainDiv} className="mainDiv"></div>
 
-        <form onSubmit={this.handleSubmit}>
-          <input
-            onChange={this.handleChange}
-            style={{ transform: "translate(0px,50px)", width: "15px" }}
-            name="num"
-            value={this.state.num}
-          ></input>
-          <button style={{ transform: "translate(5px,-490px)" }}>push</button>
-        </form>
-
-        <form onSubmit={this.handleDelete}>
-          <button style={{ transform: "translate(25px,-470px)" }}>
-            pop
-          </button>
-        </form>
         <form onSubmit={this.handleCreate}>
           <input
+            className="txt"
             onChange={this.handleChange}
-            style={{ transform: "translate(20px,50px)", width: "25px" }}
+            style={{ transform: "translate(5px,50px)", width: "100px",height: "20px" }}
             name="newVals"
             value={this.state.newVals}
           ></input>
-          <button style={{ transform: "translate(25px,-430px)" }}>
+          <button className="btn" style={{ transform: "translate(10px,-383px)", height: "22px",width:"60px" }}>
             create
           </button>
         </form>
+
+        <form onSubmit={this.handleSubmit}>
+          <input
+            onChange={this.handleChange}
+            className="txt"
+            style={{ transform: "translate(5px,50px)", width: "30px", height: "20px" }}
+            name="num"
+            value={this.state.num}
+          ></input>
+          <button className="btn" style={{ transform: "translate(80px,-357px)", height: "22px",width:"60px"}}>push</button>
+        </form>
+
+        <form onSubmit={this.handleDelete}>
+          <button className="btn" style={{ transform: "translate(115px,-330px)", height: "22px",width:"60px"}}>
+            pop
+          </button>
+        </form>
+        
         <button id="play-btn">Play</button>
       </div>
     );

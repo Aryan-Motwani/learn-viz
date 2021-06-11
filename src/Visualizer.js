@@ -15,7 +15,7 @@ class Visualizer extends Component {
     super(props);
     this.state = {
       nums: this.genNums(),
-      sortMode: this.props.sortMode,
+      sortMode: "Bubble Sort",
       stepNum: 0,
       steps: [],
       mode: "key",
@@ -44,7 +44,7 @@ class Visualizer extends Component {
   componentDidMount() {
     this.setState({newNums : this.state.nums})
     // this.handleSortMode();
-    this.stepsGen("SelectionSort");
+    this.stepsGen("Bubble Sort");
     document.addEventListener("keydown", this.handleKey);
     document.querySelectorAll('button')[0].addEventListener("mousedown", this.handleClick);
     document.querySelectorAll('button')[1].addEventListener("mousedown", this.handleClick);
@@ -151,8 +151,7 @@ class Visualizer extends Component {
   genBucks = () => {
     let bucks = this.buckets.current.children;
     for (let i = 0; i < bucks.length; i++) {
-      bucks[i].style.transform = `translate(${250 + i * 64}px,320px)`;
-      // bucks[i].style.opacity = 0;
+      bucks[i].style.transform = `translate(${250 + i * 64}px,240px)`;
     }
   };
 
@@ -743,8 +742,31 @@ class Visualizer extends Component {
     });
   }
 
-  handleSome = (e) => {
+  sortedButton = (e) => {
     e.preventDefault()
+    let nums = [];
+    while(nums.length < this.state.nums.length){
+      var r = Math.floor(Math.random() * 90) + 10;
+      if(nums.indexOf(r) === -1) nums.push(r);
+    }
+    nums.sort((a, b) => a - b);
+    this.setState({nums,steps : [], stepNum : 0}, () => {
+      // this.genBars();
+      this.stepsGen(this.state.sortMode);
+    });
+  }
+
+  randomButton = (e) => {
+    e.preventDefault();
+    let nums = [];
+    while(nums.length < this.state.nums.length){
+        var r = Math.floor(Math.random() * 90) + 10;
+        if(nums.indexOf(r) === -1) nums.push(r);
+    }
+    this.setState({nums,steps : [], stepNum : 0}, () => {
+      this.stepsGen(this.state.sortMode);
+      // this.genBars();
+    });
   }
 
   createButton = (e) => {
@@ -761,15 +783,13 @@ class Visualizer extends Component {
     console.log(isCreateOn);
     return (
       <div className="bar-main">
-        <h1>{this.props.sortMode}</h1>
+        <h1>{this.state.sortMode}</h1>
         <select onChange={this.handleSortMode}>
           <option>Bubble Sort</option>
           <option>Selection Sort</option>
           <option>Radix Sort</option>
           <option>Insertion Sort</option>
           <option>Quick Sort</option>
-          <option>Linear Search</option>
-          <option>Binary Search</option>
         </select>
         <div className="main-div" ref={this.mainDiv}>
           {nums.map((i, j) => (
