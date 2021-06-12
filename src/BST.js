@@ -31,7 +31,7 @@ export default class BST extends Component {
   }
 
   async componentDidMount() {
-    let nums = [40,30,20,35,37,50,45,55,53,60];
+    let nums = [40,30,20,50,45,60];
     for (let i = 0; i < nums.length; i++) await this.insert(nums[i]);
   }
 

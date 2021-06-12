@@ -167,6 +167,7 @@ const bubbleSort = (nums, steps, textBoxes = []) => {
 };
 
 const quickSort = (nums, steps) => {
+  // return
   let swap = (arr, idx1, idx2) => {
     [arr[idx1], arr[idx2]] = [arr[idx2], arr[idx1]];
   };
@@ -182,8 +183,11 @@ const quickSort = (nums, steps) => {
       colors[i] = "red";
       if (pivot > nums[i]) {
         swapIdx++;
-        steps.push(["s", i, swapIdx]);
-        swap(nums, i, swapIdx);
+        if(i !== swapIdx){
+
+          steps.push(["s", i, swapIdx]);
+          swap(nums, i, swapIdx);
+        }
         steps.push(["c", swapIdx, "green"]);
         colors[swapIdx] = "green";
       } else {
@@ -195,16 +199,20 @@ const quickSort = (nums, steps) => {
     steps.push(["s", start, swapIdx]);
     swap(nums, start, swapIdx);
 
-    for (let i = start; i < end + 1; i++)
+    let tempArray = [];
+    for (let i = start; i < end + 1; i++){
+      // steps.push([])
       if (colors[i] !== "orange") {
-        steps.push(["c", i, "#cffaff"]);
+        tempArray.push(["c", i, "#cffaff"]);
         colors[i] = "#cffaff";
       }
+    }
+
+    steps.push(tempArray);
 
     steps.push(["c", swapIdx, "orange"]);
     colors[swapIdx] = "orange";
 
-    console.log(nums + "\n-------------");
     return swapIdx;
   };
 

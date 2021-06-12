@@ -810,11 +810,6 @@ class Search extends Component {
       <div className="bar-main">
         <h1>{this.props.sortMode}</h1>
         <select onChange={this.handleSortMode}>
-          {/* <option>Bubble Sort</option>
-          <option>Selection Sort</option>
-          <option>Radix Sort</option>
-          <option>Insertion Sort</option>
-          <option>Quick Sort</option> */}
           <option>Binary Search</option>
           <option>Linear Search</option>
         </select>
@@ -825,13 +820,7 @@ class Search extends Component {
             </div>
           ))}
         </div>
-        <div className="buckets" ref={this.buckets}>
-          {bucks.map((i) => (
-            <div key={i} className="bucket">
-              <label className="bucket__id">{i}</label>
-            </div>
-          ))}
-        </div>
+       
         <button onClick={this.searchButton} className="btn" style={{ transform: "translate(10px,-17px)" }}>Search</button>
           <input
             type="number"
