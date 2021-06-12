@@ -12,6 +12,8 @@ class ListPage extends Component {
 
   go(e) {
     let path = this.state.list[e];
+    if(path === "Graphs") return;
+    console.log(path);
     if (main[path]) {
       this.props.history.push(`/${path}`);
     } else {

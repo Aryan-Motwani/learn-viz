@@ -39,3 +39,13 @@ body
   /* background-image: linear-gradient(to bottom right, rgb(97, 97, 97), rgb(255, 255, 255)); */
   background-color: white;
 }
+
+
+.background-tint {
+  background-color: rgba(200,100,0,.5);
+  background-blend-mode: multiply;
+}
+
+.blur{
+  filter: blur(4px);
+}
