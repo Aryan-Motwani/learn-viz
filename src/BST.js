@@ -514,6 +514,21 @@ export default class BST extends Component {
           </button>
         </form>
         <button onClick={this.runBST} className="btn" style={{ transform: "translate(60px, -355.5px)" }}>BFS</button>
+        <div style={{transform: "translate(900px,-100px)"}} className="theory">
+          <h3>Tree</h3>
+        <p>
+        A tree is a nonlinear data structure, compared to arrays, linked lists, stacks and queues which are linear data structures. A tree can be empty with no nodes or a tree is a structure consisting of one node called the root and zero or one or more subtrees.
+        <br></br>
+        <br></br>
+        One reason to use trees might be because you want to store information that naturally forms a hierarchy.
+        <br></br>
+        <br></br>
+        Trees reflect structural relationships in the data.
+Trees are used to represent hierarchies.
+Trees provide an efficient insertion and searching.
+Trees are very flexible data, allowing to move subtrees around with minumum effort.
+        </p>
+      </div>
       </div>
     );
   }

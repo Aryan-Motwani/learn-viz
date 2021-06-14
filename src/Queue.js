@@ -803,6 +803,25 @@ export default class Queue extends Component {
         </form>
         
         <button id="play-btn">Play</button>
+        <div style={{transform: "translate(900px,-100px)"}} className="theory">
+          <h3>Queue</h3>
+        <p>A queue is an example of a linear data structure, or more abstractly a sequential collection. Unlike stacks, a queue is open at both 
+            its ends. One end is always used to insert data (enqueue) and the other is used to remove data (dequeue). Queue follows First-In-First-Out 
+            methodology, i.e., the data item stored first will be accessed first.<br></br><br></br>
+           
+
+        	Serving requests on a single shared resource, like a printer, CPU task scheduling etc. In real life scenario, Call Center phone systems
+             uses Queues to hold people calling them in an order, until a service representative is free. Handling of interrupts in real-time systems.
+             Queues have the advantages of being able to handle multiple data types and they are both flexible and flexibility and fast. Moreover, 
+             queues can be of potentially infinite length compared with the use of fixed-length arrays.<br></br><br></br>
+         
+
+        	 At any given moment, there can be more people or cases needing service, help or attention than an organization can handle. Queues 
+             help workers and managers track, prioritize and ensure the delivery of services and transactions.<br></br>
+
+        	 </p>
+
+      </div>
       </div>
     );
   }

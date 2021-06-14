@@ -780,23 +780,81 @@ class Visualizer extends Component {
     let a;
     switch(this.state.sortMode){
       case "Bubble Sort":
-        a = <p>Bubble sort, sometimes referred to as sinking sort, is a simple sorting algorithm that repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order. The pass through the list is repeated until the list is sorted</p>;
+        a = <p>Bubble sort, sometimes referred to as sinking sort, is a simple sorting algorithm that repeatedly steps through the list, compares adjacent 
+        elements and swaps them if they are in  the wrong order. The pass through the list is repeated until the list is sorted. The pass through the list 
+        is repeated until the list is sorted.The primary advantage of the bubble sort is that it is popular and easy to implement.<br></br><br></br>
+        One of the main advantages of a bubble sort is that it is a very simple algorithm to describe to a computer. There is only really one task to 
+           perform (compare two values and, if needed, swap them). This makes for a very small and simple computer program.It uses less storage space. 
+           Bubble sort can be beneficial to sort the unsorted elements in a specific order. It can be used to sort the students on basis of their 
+           height in a line.<br></br><br></br>
+
+           Bubble Sort is an easy-to-implement, stable sorting algorithm with a time complexity of O(n²) in the average and worst cases – and O(n) 
+           in the best case.<br></br></p>
+          
+       
         break;
 
         case "Selection Sort":
-        a = <p>selection sort is an in-place comparison sorting algorithm. It has an O(n2) time complexity, which makes it inefficient on large lists, and generally performs worse than the similar insertion sort. Selection sort is noted for its simplicity</p>
+        a = <p>Selection sort is a simple sorting algorithm. The smallest element is selected from the unsorted array and swapped with the leftmost 
+            element, and that element becomes a part of the sorted array. This process continues moving unsorted array boundary by one element to the 
+            right. Selection sort almost always outperforms bubble sort. Can be useful when memory write is a costly operation.<br></br><br></br>
+
+           Selection sort performs very well on small lists. It is an in-place algorithm. It does not require a lot of space for sorting.
+            Only one extra space is required for holding the temporal variable.
+            It performs well on items that have already been sorted.<br></br><br></br>
+
+          It has an O(n²) time complexity, which makes it inefficient on large lists, and generally performs worse than the similar insertion sort.
+            Selection sort can also be used on list structures that make add and remove efficient, such as a linked list<br></br>
+
+           </p>
         break;
           
         case "Insertion Sort":
-        a = <p>Insertion sort is a simple sorting algorithm that builds the final sorted array (or list) one item at a time. It is much less efficient on large lists than more advanced algorithms such as quicksort, heapsort, or merge sort.</p>
+        a = <p>Insertion sort has a fast best-case running time and is a good sorting algorithm to use if the input list is already mostly sorted. 
+            Insertion sort is a sorting algorithm in which the elements are transferred one at a time to the right position. In other words, 
+            an insertion sort helps in building the final sorted list, one item at a time, with the movement of higher-ranked elements. 
+            An insertion sort has the benefits of simplicity and low overhead.<br></br><br></br>
+
+          Insertion sort is used when number of elements is small. It can also be useful when input array is almost 
+            sorted, only few elements are misplaced in complete big array. Insertion sort is the pure simplicity of the algorithm. in these sort 
+            relative order of items with equal keys does not change. it has ability to sort a list as it is being received.
+             <br></br><br></br>
+
+          So insertion sort, on average, takes O {'( n 2 ) O(n^2) O(n2)'} time. Insertion sort has a fast best-case running time and is a good 
+            sorting algorithm to use if the input list is already mostly sorted.<br></br></p>
         break;
 
         case "Quick Sort":
-        a = <p>Quicksort is a divide-and-conquer algorithm. It works by selecting a 'pivot' element from the array and partitioning the other elements into two sub-arrays, according to whether they are less than or greater than the pivot.</p>
+        a = <p>Quicksort is a divide-and-conquer algorithm. It works by selecting a 'pivot' element from the array and partitioning the other elements 
+            into two sub-arrays,  according to whether they are less than or greater than the pivot. The sub-arrays are then sorted recursively.
+            This is because of its significant advantage in terms of efficiency because it is able to deal well with a huge list of items. 
+            Because it sorts in place, no additional storage is required as well.<br></br><br></br>
+           
+
+          Quick sort is in-place since it uses only a small auxiliary stack. It has an extremely short inner loop.This algorithm has been subjected 
+            to a thorough mathematical analysis, a very precise statement can be made about performance issues.It is used in operational research and 
+            event-driven simulation. Numerical computations and in scientific research, for accuracy in calculations most of the efficiently
+             developed algorithm uses quick sort is used for sorting.<br></br><br></br>
+
+
+          To sort an array of n distinct elements, quicksort takes O(n log n) time in expectation, averaged over all n!
+             permutations of n elements with equal probability.<br></br>
+
+           </p>
         break;
 
         case "Radix Sort":
-        a = <p>radix sort is a non-comparative sorting algorithm. It avoids comparison by creating and distributing elements into buckets according to their radix. For elements with more than one significant digit, this bucketing process is repeated for each digitPlace</p>
+        a = <p>Radix sort is an integer sorting algorithm that sorts data with integer keys by grouping the keys by individual digits that share the
+             same significant position and value (place value) and Then, sort the elements according to their increasing/decreasing order.
+              Radix sort uses counting sort as a subroutine to sort an array of numbers. Radix sort performs better than quick sort when we 
+              have log n bits for every digit. But radix sort takes more space as compared to quick sort.<br></br><br></br>
+
+           radix sort is Fast when the keys are short i.e. when the range of the array elements is less. Radix Sort is stable sort as relative order 
+             of elements with equal values is maintained. In computer science, radix sort is a non-comparative sorting algorithm. 
+             Radix sort can be applied to data that can be sorted lexicographically, be they integers, words, punch cards, playing cards, or the mail.
+             <br></br><br></br>Radix Sort takes O(d*(n+b)) time where b is the base for representing numbers, for example, for the decimal system, b is 10.
+            If k is the maximum possible value, then d would be O(logb(k)). So overall time complexity is O((n+b) * logb(k)).<br></br>
+</p>
     }
     let bucks = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     let { nums, text, isCreateOn } = this.state;

@@ -804,6 +804,46 @@ class Search extends Component {
   }
 
   render() {
+    let a;
+    switch(this.state.sortMode){
+      case "Linear Search":
+        a = <p>Linear search is a very simple search algorithm. In this type of search, a sequential search is made over all items one by one. 
+            Every item is checked and if a match is found then that particular item is returned, otherwise the search continues till the end
+             of the data collection. In computer science, a linear search or sequential search is a method for finding an element within
+              a list. It sequentially checks each element of the list until a match is found or the whole list has been searched.<br></br><br></br>
+           
+
+          Linear search Will perform fast searches of small to medium lists. With today's powerful computers, small to medium arrays 
+            can be searched relatively quickly. in Linear search The list does not need to sorted. Not affected by insertions and deletions.
+            Linear search is usually very simple to implement, and is practical when the list has only a few elements, or when performing a 
+            single search in an un-ordered list.<br></br><br></br>
+         
+
+           In linear search, best-case complexity is O(1) where the element is found at the first index. The worst-case complexity is O(log2n).<br></br>
+
+           </p>
+        break;
+
+        case "Binary Search":
+        a=<p>In computer science, binary search, also known as half-interval search, logarithmic search, or binary chop, is a search algorithm
+             that finds the position of a target value within a sorted array. Binary search compares the target value to the middle element 
+             of the array. means This search algorithm works on the principle of divide and conquer. Binary search looks for a particular item by 
+             comparing the middle most item of the collection. If a match occurs, then the index of item is returned.<br></br><br></br>
+           
+
+          The main advantage of using binary search is that it does not scan each element in the list. So, the binary search takes less 
+            time to search an element as compared to a linear search. binary search is used to quickly find a value in a sorted sequence 
+            (consider a sequence an ordinary array for now). We'll call the sought value the target value for clarity. Binary search 
+            maintains a contiguous subsequence of the starting sequence where the target value is surely located.<br></br><br></br>
+         
+
+          The time complexity of the binary search algorithm is O(log n). The best-case time complexity would be
+             O(1) when the central index would directly match the desired value.<br></br>
+
+           </p>
+           break;
+
+       }
     let bucks = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     let { nums, isCreateOn, isSearchOn} = this.state;
     return (
@@ -856,6 +896,11 @@ class Search extends Component {
           <button onClick={this.randomButton} className="btn" style={{transform : "translate(-210px,-50px)", opacity:isCreateOn }}>Random</button>
           <button onClick={this.sortedButton} className="btn" style={{transform : "translate(-125px,-50px)", opacity:isCreateOn }}>Sorted</button>
         </form>
+        
+        <div style={{transform: "translate(900px,-100px)"}} className="theory">
+          <h3>{this.state.sortMode}</h3>
+          {a}
+        </div>
       </div>
     );
   }

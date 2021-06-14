@@ -59,3 +59,11 @@ label {
   -o-transition: none !important;
   transition: none !important;
 }
+
+.theory{
+  background-color: burlywood;
+  display: inline-block;
+  width: 400px;
+  height: 460px;
+
+}

@@ -880,7 +880,27 @@ export default class LinkedList extends Component {
         </form>
         
         <button className="btn" id="play-btn">Play</button>
+        <div style={{transform: "translate(900px,-100px)"}} className="theory">
+          <h3>Linked List</h3>
+        <p>A linked list is a dynamic data structure where each element (called a node) is made up of two items: the data and a reference (or pointer),
+             which points to the next node. A linked list is a collection of nodes where each node is connected to the next node through a pointer.
+             linked list is a linear collection of data elements whose order is not given by their physical placement in memory. Instead, each element 
+             points to the next. It is a data structure consisting of a collection of nodes which together represent a sequence.<br></br><br></br>
+           
+
+        	Application of linked list is:<br></br>
+            1.Implementation of stacks and queues.
+            2.Implementation of graphs : Adjacency list representation of graphs is most popular which is uses linked list to store adjacent vertices.
+            3.Dynamic memory allocation : We use linked list of free blocks.<br></br><br></br>
+         
+
+        	Dynamic Data Structure, Insertion and Deletion, No Memory Wastage, Memory Usage, Traversal and Reverse Traversing 
+            are some of the advantages of linked list. Linked lists are useful because they support the efficient insertion and removal of elements at
+            the expense of inefficient element access, as opposed to arrays. When a variable is created, the computer must allocate memory.<br></br>
+
+        	 </p>
       </div>
+        </div>
     );
   }
 }

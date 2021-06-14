@@ -805,6 +805,29 @@ export default class Stack extends Component {
         </form>
         
         <button id="play-btn">Play</button>
+        <div style={{transform: "translate(900px,-100px)"}} className="theory">
+          <h3>Stack</h3>
+        <p>Stack is a linear data structure which follows a particular order in which the operations are performed. The order may be 
+            LIFO(Last In First Out) or FILO(First In Last Out). In computer science, a stack is an abstract data type that serves as a collection of 
+            elements, with two main principal operations: Push, which adds an element to the collection, and. Pop, which removes the most recently 
+            added element that was not yet removed.  <br></br><br></br>
+          
+           
+
+        	Application of stack is:<br></br>
+            1.Expression Handling 
+            2.Backtracking Procedure 
+            3.Another great use of stack is during the function call and return process.<br></br><br></br>
+         
+
+        	This is especially important in understanding how recursion works. In stack we can allocate memory dynamically. When a function is called 
+            the local variables are stored in a stack, and it is automaticallydestroyed once returned. A stack is used when a 
+            variable is not used outside that function. It allows you to control how memory is allocated and deallocated. Stack automatically cleans 
+            up the object.<br></br>
+         
+
+        	 </p>
+      </div>
       </div>
     );
   }
