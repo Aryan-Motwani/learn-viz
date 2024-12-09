@@ -7,7 +7,7 @@ class Navbar extends Component{
     render(){
         return (
             <div className="Navbar">
-                <h1><NavLink className="lz-head" to="/">LearnViz</NavLink></h1>
+                <h1><NavLink className="lz-head" to="/">LearnVizz</NavLink></h1>
                 <ul>
                     <NavLink className={`nav-link`} to="/">Home</NavLink>
                     <NavLink className={`nav-link`} to="/a/Sorting Algorithms">Algorithms</NavLink>
